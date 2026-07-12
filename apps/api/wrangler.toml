@@ -6,17 +6,17 @@ compatibility_date = "2024-12-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "pebnews-db"
-database_id = ""
+database_id = "5d813133-4141-4259-9efa-bb89d39d2957"
 
-# R2 Bucket
-[[r2_buckets]]
-binding = "R2"
-bucket_name = "pebnews-images"
+# R2 Bucket (uncomment after enabling R2 in Cloudflare Dashboard)
+# [[r2_buckets]]
+# binding = "R2"
+# bucket_name = "pebnews-images"
 
 # KV Namespace
 [[kv_namespaces]]
 binding = "KV"
-id = ""
+id = "420417d4798c444c9c88a475f889a78e"
 
 # Cron Trigger for RSS ingestion
 [triggers]
@@ -24,6 +24,4 @@ crons = ["*/15 * * * *"]
 
 # Environment variables
 [vars]
-ALLOWED_EDITOR_DOMAIN = "pebnews.com"
-JWT_SECRET = "change-this-in-production"
 RSS_FETCH_INTERVAL_CRON = "*/15 * * * *"
