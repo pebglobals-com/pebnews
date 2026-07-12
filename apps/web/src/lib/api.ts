@@ -41,6 +41,7 @@ export const api = {
   rss: {
     breaking: (limit = 10) =>
       request<{ items: any[] }>(`/api/rss/breaking?limit=${limit}`),
+    curated: () => request<{ featured: any[]; breakingArticles: any[] }>('/api/rss/curated/feed'),
   },
   auth: {
     readerSignup: (name: string, email: string, password: string) =>

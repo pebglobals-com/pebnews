@@ -7,6 +7,7 @@ import NewArticle from './pages/NewArticle'
 import EditArticle from './pages/EditArticle'
 import ArticleList from './pages/ArticleList'
 import RssSources from './pages/RssSources'
+import RssCuratedFeed from './pages/RssCuratedFeed'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('token')
@@ -68,6 +69,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <RssSources />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/editor/rss/curated"
+          element={
+            <ProtectedRoute>
+              <RssCuratedFeed />
             </ProtectedRoute>
           }
         />

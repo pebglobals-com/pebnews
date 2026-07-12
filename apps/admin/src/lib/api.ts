@@ -61,5 +61,10 @@ export const adminApi = {
       request<{ active: number }>(`/api/rss/sources/${id}/toggle`, { method: 'PATCH' }),
     delete: (id: string) =>
       request<{ success: boolean }>(`/api/rss/sources/${id}`, { method: 'DELETE' }),
+    curated: () => request<{ items: any[] }>('/api/rss/curated'),
+    feature: (id: string) =>
+      request<{ success: boolean; featured: number }>(`/api/rss/curated/${id}/feature`, { method: 'POST' }),
+    unfeature: (id: string) =>
+      request<{ success: boolean; featured: number }>(`/api/rss/curated/${id}/unfeature`, { method: 'POST' }),
   },
 }

@@ -31,6 +31,9 @@ export interface Article {
   published_at: string | null
   created_at: string
   updated_at: string
+  is_breaking?: number
+  origin_source_name?: string | null
+  origin_source_link?: string | null
 }
 
 export interface ArticleWithMeta extends Article {
@@ -55,6 +58,16 @@ export interface BreakingNewsItem {
   link: string
   pub_date: string | null
   fetched_at: string
+  source_domain?: string
+  thumbnail_url?: string
+  featured?: number
+  featured_at?: string | null
+  featured_by?: string | null
+}
+
+export interface CuratedFeed {
+  featured: BreakingNewsItem[]
+  breakingArticles: ArticleWithMeta[]
 }
 
 export interface ArticleView {

@@ -20,6 +20,9 @@ const articleSchema = z.object({
   featured_image_url: z.string().url().nullable().optional(),
   status: z.enum(['draft', 'scheduled', 'published']),
   published_at: z.string().nullable().optional(),
+  is_breaking: z.number().int().min(0).max(1).optional(),
+  origin_source_name: z.string().nullable().optional(),
+  origin_source_link: z.string().nullable().optional(),
 })
 
 const updateSchema = articleSchema.partial()
@@ -80,6 +83,9 @@ app.post('/', authenticate, requireRole('editor', 'admin'), zValidator('json', a
     featured_image_url: data.featured_image_url ?? null,
     status: data.status,
     published_at: data.published_at ?? (data.status === 'published' ? new Date().toISOString() : null),
+    is_breaking: data.is_breaking ?? 0,
+    origin_source_name: data.origin_source_name ?? null,
+    origin_source_link: data.origin_source_link ?? null,
   })
 
   // Purge KV cache if published

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../lib/api'
 import ArticleCard from '../components/ArticleCard'
+import BreakingNewsGrid from '../components/BreakingNewsGrid'
 
 interface SectionGroup {
   slug: string
@@ -119,6 +120,9 @@ export default function Home() {
           </Link>
         </section>
       )}
+
+      {/* Breaking News Grid */}
+      <BreakingNewsGrid />
 
       {/* Two-column layout */}
       <div className="flex flex-col gap-8 lg:flex-row">

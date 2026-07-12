@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { adminApi } from '../lib/api'
-import { Plus, FileText, Rss, LogOut } from 'lucide-react'
+import { Plus, FileText, Rss, Sparkles, LogOut } from 'lucide-react'
 
 export default function Dashboard() {
   const [articles, setArticles] = useState<any[]>([])
@@ -33,6 +33,10 @@ export default function Dashboard() {
           <Link to="/editor/rss-sources" className="btn-secondary text-sm">
             <Rss className="mr-1.5 h-4 w-4" />
             RSS Sources
+          </Link>
+          <Link to="/editor/rss/curated" className="btn-secondary text-sm">
+            <Sparkles className="mr-1.5 h-4 w-4" />
+            Curated Feed
           </Link>
           <button onClick={handleLogout} className="btn-secondary text-sm">
             <LogOut className="mr-1.5 h-4 w-4" />

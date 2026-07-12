@@ -53,6 +53,40 @@ app.delete('/sources/:id', authenticate, requireRole('editor', 'admin'), async (
   return c.json({ success: true })
 })
 
+// Editor: list all cached items (newest first), with featured state
+app.get('/curated', authenticate, requireRole('editor', 'admin'), async (c) => {
+  const items = await c.env.DB
+    .prepare('SELECT * FROM breaking_news_cache ORDER BY fetched_at DESC LIMIT 100')
+    .all()
+  return c.json({ items: items.results })
+})
+
+// Editor: feature a cached item as-is
+app.post('/curated/:id/feature', authenticate, requireRole('editor', 'admin'), async (c) => {
+  const { id } = c.req.param()
+  const user: JwtPayload = c.get('user')
+  const item = await c.env.DB
+    .prepare('SELECT id FROM breaking_news_cache WHERE id = ?')
+    .bind(id)
+    .first()
+  if (!item) return c.json({ error: 'Item not found' }, 404)
+  await c.env.DB
+    .prepare("UPDATE breaking_news_cache SET featured = 1, featured_at = datetime('now'), featured_by = ? WHERE id = ?")
+    .bind(user.user_id, id)
+    .run()
+  return c.json({ success: true, featured: 1 })
+})
+
+// Editor: unfeature a cached item
+app.post('/curated/:id/unfeature', authenticate, requireRole('editor', 'admin'), async (c) => {
+  const { id } = c.req.param()
+  await c.env.DB
+    .prepare('UPDATE breaking_news_cache SET featured = 0, featured_at = NULL, featured_by = NULL WHERE id = ?')
+    .bind(id)
+    .run()
+  return c.json({ success: true, featured: 0 })
+})
+
 // Public: get breaking news from cache
 app.get('/breaking', async (c) => {
   const limit = Math.min(Number(c.req.query('limit')) || 10, 30)
@@ -61,6 +95,17 @@ app.get('/breaking', async (c) => {
     .bind(limit)
     .all()
   return c.json({ items: items.results })
+})
+
+// Public: get curated feed (featured items)
+app.get('/curated/feed', async (c) => {
+  const featured = await c.env.DB
+    .prepare("SELECT id, source_name, headline, link, pub_date, fetched_at, source_domain, thumbnail_url FROM breaking_news_cache WHERE featured = 1 ORDER BY featured_at DESC")
+    .all()
+  const breakingArticles = await c.env.DB
+    .prepare("SELECT id, title, slug, excerpt, featured_image_url, published_at, origin_source_name FROM articles WHERE is_breaking = 1 AND status = 'published' ORDER BY published_at DESC LIMIT 20")
+    .all()
+  return c.json({ featured: featured.results, breakingArticles: breakingArticles.results })
 })
 
 export default app

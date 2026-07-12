@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { adminApi } from '../lib/api'
 import SectionPicker from '../components/SectionPicker'
 import PublishBar from '../components/PublishBar'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Flame } from 'lucide-react'
 
 export default function NewArticle() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [sections, setSections] = useState<any[]>([])
   const [selectedSection, setSelectedSection] = useState<any | null>(null)
-  const [title, setTitle] = useState('')
-  const [excerpt, setExcerpt] = useState('')
+  const [title, setTitle] = useState(searchParams.get('title') || '')
+  const [excerpt, setExcerpt] = useState(searchParams.get('excerpt') || '')
   const [body, setBody] = useState('')
-  const [featuredImageUrl, setFeaturedImageUrl] = useState('')
+  const [featuredImageUrl, setFeaturedImageUrl] = useState(searchParams.get('featured_image_url') || '')
+  const [isBreaking, setIsBreaking] = useState(searchParams.get('is_breaking') === '1')
+  const [originSourceName, setOriginSourceName] = useState(searchParams.get('origin_source_name') || '')
+  const [originSourceLink, setOriginSourceLink] = useState(searchParams.get('origin_source_link') || '')
   const [saving, setSaving] = useState(false)
   const [articleId, setArticleId] = useState<string | null>(null)
 
@@ -23,7 +27,7 @@ export default function NewArticle() {
   async function handlePublish(scheduledAt?: string) {
     if (!selectedSection || !title.trim()) return
     setSaving(true)
-    const payload = {
+    const payload: any = {
       title,
       section_id: selectedSection.id,
       excerpt,
@@ -31,7 +35,10 @@ export default function NewArticle() {
       featured_image_url: featuredImageUrl || null,
       status: scheduledAt ? 'scheduled' : 'published',
       published_at: scheduledAt || undefined,
+      is_breaking: isBreaking ? 1 : 0,
     }
+    if (originSourceName) payload.origin_source_name = originSourceName
+    if (originSourceLink) payload.origin_source_link = originSourceLink
     try {
       const res = await adminApi.articles.create(payload)
       setArticleId(res.article.id)
@@ -46,14 +53,17 @@ export default function NewArticle() {
   async function handleSaveDraft() {
     if (!selectedSection || !title.trim()) return
     setSaving(true)
-    const payload = {
+    const payload: any = {
       title,
       section_id: selectedSection.id,
       excerpt,
       body,
       featured_image_url: featuredImageUrl || null,
       status: 'draft',
+      is_breaking: isBreaking ? 1 : 0,
     }
+    if (originSourceName) payload.origin_source_name = originSourceName
+    if (originSourceLink) payload.origin_source_link = originSourceLink
     try {
       const res = await adminApi.articles.create(payload)
       setArticleId(res.article.id)
@@ -86,14 +96,35 @@ export default function NewArticle() {
         <ArrowLeft className="mr-1.5 h-4 w-4" /> Change Section
       </button>
 
-      <div className="mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <span
           className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold text-white"
           style={{ backgroundColor: selectedSection.color_hex }}
         >
           {selectedSection.name}
         </span>
+        <label className="flex items-center gap-2 text-sm cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isBreaking}
+            onChange={(e) => setIsBreaking(e.target.checked)}
+            className="h-4 w-4 rounded border-surface-300 text-red-500 focus:ring-red-500"
+          />
+          <Flame className={`h-4 w-4 ${isBreaking ? 'text-red-500' : 'text-surface-300'}`} />
+          <span className="font-medium text-surface-700">Breaking News</span>
+        </label>
       </div>
+
+      {originSourceName && (
+        <div className="mb-4 rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-800">
+          Based on news from <strong>{originSourceName}</strong>
+          {originSourceLink && (
+            <a href={originSourceLink} target="_blank" rel="noopener noreferrer" className="ml-1 underline hover:text-blue-600">
+              (source)
+            </a>
+          )}
+        </div>
+      )}
 
       <div className="card space-y-6">
         <div>

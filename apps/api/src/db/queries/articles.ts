@@ -72,13 +72,16 @@ export async function createArticle(
 ): Promise<Article> {
   await db
     .prepare(
-      `INSERT INTO articles (id, title, slug, section_id, author_id, excerpt, body, featured_image_url, status, published_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO articles (id, title, slug, section_id, author_id, excerpt, body, featured_image_url, status, published_at, is_breaking, origin_source_name, origin_source_link)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .bind(
       article.id, article.title, article.slug, article.section_id,
       article.author_id, article.excerpt, article.body,
-      article.featured_image_url, article.status, article.published_at
+      article.featured_image_url, article.status, article.published_at,
+      (article as any).is_breaking ?? 0,
+      (article as any).origin_source_name ?? null,
+      (article as any).origin_source_link ?? null
     )
     .run()
   return article as Article

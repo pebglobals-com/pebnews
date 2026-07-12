@@ -1,14 +1,19 @@
-interface RssItem {
-  headline: string
-  link: string
-  source_name: string
-  pub_date: string | null
+function extractDomain(url: string): string {
+  try { return new URL(url).hostname } catch { return '' }
 }
 
-async function parseFeed(xml: string, sourceName: string): Promise<RssItem[]> {
-  const items: RssItem[] = []
+function extractThumbnail(xml: string): string {
+  const mediaMatch = /<media:thumbnail[^>]*url="([^"]+)"/i.exec(xml)
+  if (mediaMatch) return mediaMatch[1]
+  const enclosureMatch = /<enclosure[^>]*url="([^"]+)"[^>]*type="image/i.exec(xml)
+  if (enclosureMatch) return enclosureMatch[1]
+  const contentMatch = /<media:content[^>]*url="([^"]+)"[^>]*medium="image/i.exec(xml)
+  if (contentMatch) return contentMatch[1]
+  return ''
+}
 
-  // Extract <item> elements
+function extractItemsFromXml(xml: string, sourceName: string, feedUrl: string): any[] {
+  const items: any[] = []
   const itemRegex = /<item>([\s\S]*?)<\/item>/gi
   let match
   while ((match = itemRegex.exec(xml)) !== null) {
@@ -20,12 +25,20 @@ async function parseFeed(xml: string, sourceName: string): Promise<RssItem[]> {
     const headline = titleMatch?.[1] || titleMatch?.[2] || ''
     const link = linkMatch?.[1] || ''
     const pubDate = dateMatch?.[1] || dateMatch?.[2] || null
+    const thumbnail = extractThumbnail(content)
+    const domain = extractDomain(link)
 
     if (headline && link) {
-      items.push({ headline: headline.trim(), link: link.trim(), source_name: sourceName, pub_date: pubDate })
+      items.push({
+        headline: headline.trim(),
+        link: link.trim(),
+        source_name: sourceName,
+        source_domain: domain,
+        thumbnail_url: thumbnail,
+        pub_date: pubDate,
+      })
     }
   }
-
   return items
 }
 
@@ -45,10 +58,9 @@ export async function fetchAllFeeds(db: D1Database): Promise<number> {
       if (!response.ok) continue
 
       const xml = await response.text()
-      const items = await parseFeed(xml, source.name)
+      const items = extractItemsFromXml(xml, source.name, source.feed_url)
 
       for (const item of items) {
-        // Dedup by link
         const existing = await db
           .prepare('SELECT id FROM breaking_news_cache WHERE link = ?')
           .bind(item.link)
@@ -58,13 +70,13 @@ export async function fetchAllFeeds(db: D1Database): Promise<number> {
 
         const id = crypto.randomUUID()
         await db
-          .prepare('INSERT INTO breaking_news_cache (id, source_name, headline, link, pub_date) VALUES (?, ?, ?, ?, ?)')
-          .bind(id, item.source_name, item.headline, item.link, item.pub_date)
+          .prepare('INSERT INTO breaking_news_cache (id, source_name, headline, link, pub_date, source_domain, thumbnail_url) VALUES (?, ?, ?, ?, ?, ?, ?)')
+          .bind(id, item.source_name, item.headline, item.link, item.pub_date, item.source_domain, item.thumbnail_url)
           .run()
         totalNew++
       }
     } catch {
-      continue // Skip failed feeds silently
+      continue
     }
   }
 
