@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { api } from '../lib/api'
 
 interface BreakingItem {
@@ -12,9 +12,10 @@ interface BreakingItem {
 export default function BreakingNewsStrip() {
   const [items, setItems] = useState<BreakingItem[]>([])
   const [loading, setLoading] = useState(true)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    api.rss.breaking(8).then((data) => {
+    api.rss.breaking(12).then((data) => {
       setItems(data.items)
       setLoading(false)
     }).catch(() => setLoading(false))
@@ -23,23 +24,23 @@ export default function BreakingNewsStrip() {
   if (loading || items.length === 0) return null
 
   return (
-    <div className="bg-amber-50 border-b border-amber-200">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3 py-2 overflow-hidden">
-          <span className="shrink-0 rounded bg-amber-500 px-2 py-0.5 text-xs font-bold text-white uppercase tracking-wider">
-            Breaking
-          </span>
-          <div className="flex gap-6 overflow-x-auto scrollbar-none">
-            {items.slice(0, 5).map((item) => (
+    <div className="bg-red-600 text-white">
+      <div className="mx-auto flex max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+        <span className="shrink-0 bg-white px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-red-600">
+          Breaking
+        </span>
+        <div ref={scrollRef} className="overflow-hidden py-1.5 ml-3">
+          <div className="flex animate-scroll gap-8 whitespace-nowrap">
+            {items.map((item) => (
               <a
                 key={item.id}
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 text-sm text-amber-900 hover:text-amber-700 transition-colors whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 text-sm text-white/90 hover:text-white transition-colors shrink-0"
               >
-                <span className="font-medium">{item.source_name}:</span>{' '}
-                {item.headline}
+                <span className="font-semibold">{item.source_name}:</span>
+                <span>{item.headline}</span>
               </a>
             ))}
           </div>

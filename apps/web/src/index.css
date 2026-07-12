@@ -54,3 +54,16 @@
     @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold text-white;
   }
 }
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll {
+  animation: scroll 40s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
