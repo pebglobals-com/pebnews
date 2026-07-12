@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8787'
+const API_BASE = import.meta.env.VITE_API_URL || 'https://pebnews-api.pebglobals.workers.dev'
 
 function getToken(): string | null {
   return localStorage.getItem('token')
