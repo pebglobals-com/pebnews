@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -7,7 +7,7 @@ import ImageExtension from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import {
   Bold, Italic, Underline as UnderlineIcon, Heading2, Heading3,
-  Quote, List, ListOrdered, Link, Image, Pilcrow,
+  Quote, List, ListOrdered, Link, Image, Video, Film, Loader2,
 } from 'lucide-react'
 import { adminApi } from '../lib/api'
 
@@ -37,6 +37,7 @@ function MenuButton({ onClick, active, children, title }: {
 }
 
 export default function RichTextEditor({ content, onChange }: Props) {
+  const [uploadingImage, setUploadingImage] = useState(false)
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -118,11 +119,38 @@ export default function RichTextEditor({ content, onChange }: Props) {
     input.onchange = async () => {
       const file = input.files?.[0]
       if (!file || !editor) return
+      setUploadingImage(true)
       try {
         const res = await adminApi.upload.image(file)
         editor.chain().focus().setImage({ src: res.url }).run()
       } catch {
         window.alert('Failed to upload image')
+      } finally {
+        setUploadingImage(false)
+      }
+    }
+    input.click()
+  }, [editor])
+
+  const handleVideoUpload = useCallback(async () => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'video/*'
+    input.onchange = async () => {
+      const file = input.files?.[0]
+      if (!file || !editor) return
+      try {
+        const res = await adminApi.upload.video(file)
+        editor
+          .chain()
+          .focus()
+          .setNode('paragraph')
+          .insertContent(
+            `<video controls class="w-full rounded my-4"><source src="${res.url}" type="${file.type}"></video>`
+          )
+          .run()
+      } catch {
+        window.alert('Failed to upload video')
       }
     }
     input.click()
@@ -173,10 +201,13 @@ export default function RichTextEditor({ content, onChange }: Props) {
           <Image className="h-4 w-4" />
         </MenuButton>
         <MenuButton onClick={handleImageUpload} active={false} title="Upload image">
-          <Image className="h-4 w-4" />
+          {uploadingImage ? <Loader2 className="h-4 w-4 animate-spin" /> : <Image className="h-4 w-4" />}
         </MenuButton>
-        <MenuButton onClick={addVideo} active={false} title="Embed video">
-          <Pilcrow className="h-4 w-4" />
+        <MenuButton onClick={addVideo} active={false} title="Embed video URL">
+          <Video className="h-4 w-4" />
+        </MenuButton>
+        <MenuButton onClick={handleVideoUpload} active={false} title="Upload video file">
+          <Film className="h-4 w-4" />
         </MenuButton>
       </div>
       <EditorContent editor={editor} />

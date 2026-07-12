@@ -71,6 +71,12 @@ export const adminApi = {
   },
   upload: {
     image: async (file: File): Promise<{ url: string; key: string }> => {
+      return adminApi.upload.file(file)
+    },
+    video: async (file: File): Promise<{ url: string; key: string }> => {
+      return adminApi.upload.file(file)
+    },
+    file: async (file: File): Promise<{ url: string; key: string }> => {
       const token = getToken()
       const formData = new FormData()
       formData.append('file', file)

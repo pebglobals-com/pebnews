@@ -24,6 +24,7 @@ export default function NewArticle() {
   const [articleId, setArticleId] = useState<string | null>(null)
   const [showPreview, setShowPreview] = useState(false)
   const [extraImages, setExtraImages] = useState<string[]>([])
+  const [error, setError] = useState('')
 
   useEffect(() => {
     adminApi.sections.list().then((data) => setSections(data.sections))
@@ -76,6 +77,7 @@ export default function NewArticle() {
 
   async function handlePublish(scheduledAt?: string) {
     if (!selectedSection || !title.trim()) return
+    setError('')
     setSaving(true)
     try {
       const res = await adminApi.articles.create(
@@ -85,7 +87,7 @@ export default function NewArticle() {
       localStorage.removeItem('draft_in_progress')
       navigate('/editor/dashboard')
     } catch (err: any) {
-      alert(err.message || 'Failed to publish')
+      setError(err.message || 'Failed to publish')
     } finally {
       setSaving(false)
     }
@@ -93,13 +95,14 @@ export default function NewArticle() {
 
   async function handleSaveDraft() {
     if (!selectedSection || !title.trim()) return
+    setError('')
     setSaving(true)
     try {
       const res = await adminApi.articles.create(buildPayload('draft'))
       setArticleId(res.article.id)
       localStorage.removeItem('draft_in_progress')
     } catch (err: any) {
-      alert(err.message || 'Failed to save draft')
+      setError(err.message || 'Failed to save draft')
     } finally {
       setSaving(false)
     }
@@ -163,6 +166,12 @@ export default function NewArticle() {
           {selectedSection.name}
         </span>
       </div>
+
+      {error && (
+        <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+          {error}
+        </div>
+      )}
 
       {originSourceName && (
         <div className="mb-4 rounded-lg bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-800">
