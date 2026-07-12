@@ -10,7 +10,16 @@ import { fetchAllFeeds } from './jobs/fetchRssFeeds'
 
 const app = new Hono<{ Bindings: { DB: D1Database; KV: KVNamespace; R2: R2Bucket; JWT_SECRET: string } }>()
 
-app.use('/*', cors())
+app.use('/*', cors({
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:4173',
+    'https://pebnews-web.pages.dev',
+    'https://pebnews-admin.pages.dev',
+    'https://pebnews-admin.talent-loop.org',
+  ],
+  credentials: true,
+}))
 
 app.route('/api/auth', authRoutes)
 app.route('/api/articles', articleRoutes)
