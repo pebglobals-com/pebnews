@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { Eye } from 'lucide-react'
-import SectionBadge from './SectionBadge'
 
 interface ArticleCardProps {
   title: string
@@ -30,7 +29,7 @@ function timeAgo(dateStr: string): string {
 }
 
 export default function ArticleCard({
-  title, slug, excerpt, sectionName, sectionSlug, sectionColor,
+  title, slug, excerpt, sectionName, sectionColor,
   featuredImageUrl, publishedAt, viewCount, authorName,
 }: ArticleCardProps) {
   const date = publishedAt || new Date().toISOString()
@@ -38,24 +37,31 @@ export default function ArticleCard({
   const articlePath = `/article/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${slug}`
 
   return (
-    <Link to={articlePath} className="group block rounded-xl border border-surface-200 bg-white p-4 transition-shadow duration-150 hover:shadow-md">
+    <Link to={articlePath} className="group block border-b border-gray-100 pb-4 mb-4 last:border-0">
       {featuredImageUrl && (
-        <div className="mb-3 overflow-hidden rounded-lg">
+        <div className="mb-2.5 overflow-hidden rounded">
           <img
             src={featuredImageUrl}
             alt={title}
-            className="h-48 w-full object-cover transition-transform duration-150 group-hover:scale-[1.02]"
+            className="h-44 w-full object-cover transition-transform duration-150 group-hover:scale-[1.02]"
             loading="lazy"
           />
         </div>
       )}
-      <SectionBadge name={sectionName} color={sectionColor} slug={sectionSlug} />
-      <h3 className="mt-2 text-lg font-semibold leading-snug text-surface-900 group-hover:text-primary-600 transition-colors">
+      <span
+        className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white"
+        style={{ backgroundColor: sectionColor }}
+      >
+        {sectionName}
+      </span>
+      {authorName && (
+        <span className="ml-2 text-xs text-gray-400">By: {authorName}</span>
+      )}
+      <h3 className="mt-1.5 text-base font-bold leading-snug text-gray-900 group-hover:text-blue-600 transition-colors">
         {title}
       </h3>
-      <p className="mt-1.5 text-sm text-surface-500 line-clamp-2">{excerpt}</p>
-      <div className="mt-3 flex items-center gap-3 text-xs text-surface-400">
-        {authorName && <span>{authorName}</span>}
+      <p className="mt-1 text-sm leading-relaxed text-gray-500 line-clamp-2">{excerpt}</p>
+      <div className="mt-2 flex items-center gap-3 text-xs text-gray-400">
         <span>{timeAgo(date)}</span>
         {viewCount !== undefined && (
           <span className="flex items-center gap-1">
