@@ -6,8 +6,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div>
-            <h3 className="text-lg font-bold text-surface-900">PEB News</h3>
-            <p className="mt-2 text-sm text-surface-500 max-w-text">
+            <img src="/logo.png" alt="PEB News" className="h-12 w-auto mb-2" />
+            <p className="text-sm text-surface-500 max-w-text">
               Your trusted source for local and regional news, delivered with accuracy and integrity.
             </p>
           </div>

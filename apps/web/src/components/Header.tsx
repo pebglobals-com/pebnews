@@ -50,8 +50,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       {/* Top bar */}
       <div className="border-b border-gray-200 bg-gray-50">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-1.5 sm:px-6 lg:px-8">
-          <p className="text-xs text-gray-500">The Online Newspaper</p>
+        <div className="mx-auto flex max-w-7xl items-center justify-end px-4 py-1.5 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             {token ? (
               <Link to="/profile" className="text-xs text-gray-600 hover:text-gray-900 flex items-center gap-1">
@@ -70,12 +69,8 @@ export default function Header() {
       {/* Logo + Search */}
       <div className="border-b border-gray-200">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <Link to="/" className="flex items-center gap-3">
-            <img src="/logo.png" alt="PEB News" className="h-10 w-auto" />
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold tracking-tight text-gray-900">PEB News</span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 -mt-0.5">The Online Newspaper</span>
-            </div>
+          <Link to="/">
+            <img src="/logo.png" alt="PEB News" className="h-14 w-auto sm:h-16" />
           </Link>
 
           <div className="flex items-center gap-4">
