@@ -8,10 +8,10 @@ binding = "DB"
 database_name = "pebnews-db"
 database_id = "5d813133-4141-4259-9efa-bb89d39d2957"
 
-# R2 Bucket (uncomment after enabling R2 in Cloudflare Dashboard)
-# [[r2_buckets]]
-# binding = "R2"
-# bucket_name = "pebnews-images"
+# R2 Bucket
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "pebnews-images"
 
 # KV Namespace
 [[kv_namespaces]]
