@@ -70,9 +70,12 @@ export default function Header() {
       {/* Logo + Search */}
       <div className="border-b border-gray-200">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <Link to="/" className="flex flex-col">
-            <span className="text-3xl font-bold tracking-tight text-gray-900">PEB News</span>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 -mt-0.5">The Online Newspaper</span>
+          <Link to="/" className="flex items-center gap-3">
+            <img src="/logo.png" alt="PEB News" className="h-10 w-auto" />
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold tracking-tight text-gray-900">PEB News</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 -mt-0.5">The Online Newspaper</span>
+            </div>
           </Link>
 
           <div className="flex items-center gap-4">

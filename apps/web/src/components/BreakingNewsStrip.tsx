@@ -29,22 +29,22 @@ export default function BreakingNewsStrip() {
         <span className="shrink-0 bg-white px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-red-600">
           Breaking
         </span>
-        <div ref={scrollRef} className="overflow-hidden py-1.5 ml-3">
-          <div className="flex animate-scroll gap-8 whitespace-nowrap">
-            {items.map((item) => (
-              <a
-                key={item.id}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-white/90 hover:text-white transition-colors shrink-0"
-              >
-                <span className="font-semibold">{item.source_name}:</span>
-                <span>{item.headline}</span>
-              </a>
-            ))}
+          <div ref={scrollRef} className="overflow-hidden py-1.5 ml-3 flex-1">
+            <div className="flex animate-scroll gap-8 whitespace-nowrap" style={{ width: 'max-content' }}>
+              {[...items, ...items].map((item, i) => (
+                <a
+                  key={`${item.id}-${i}`}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm text-white/90 hover:text-white transition-colors shrink-0"
+                >
+                  <span className="font-semibold">{item.source_name}:</span>
+                  <span>{item.headline}</span>
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
       </div>
     </div>
   )
