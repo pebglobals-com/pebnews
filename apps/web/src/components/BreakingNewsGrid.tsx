@@ -41,7 +41,7 @@ export default function BreakingNewsGrid() {
             className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md"
           >
             <div className="aspect-[16/9] overflow-hidden bg-gray-100">
-              {item.thumbnail_url ? (
+              {item.thumbnail_url && item.thumbnail_url.trim() ? (
                 <img
                   src={item.thumbnail_url}
                   alt=""

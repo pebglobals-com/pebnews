@@ -2,14 +2,14 @@ function extractDomain(url: string): string {
   try { return new URL(url).hostname } catch { return '' }
 }
 
-function extractThumbnail(xml: string): string {
+function extractThumbnail(xml: string): string | null {
   const mediaMatch = /<media:thumbnail[^>]*url="([^"]+)"/i.exec(xml)
   if (mediaMatch) return mediaMatch[1]
   const enclosureMatch = /<enclosure[^>]*url="([^"]+)"[^>]*type="image/i.exec(xml)
   if (enclosureMatch) return enclosureMatch[1]
   const contentMatch = /<media:content[^>]*url="([^"]+)"[^>]*medium="image/i.exec(xml)
   if (contentMatch) return contentMatch[1]
-  return ''
+  return null
 }
 
 function extractItemsFromXml(xml: string, sourceName: string, feedUrl: string): any[] {
@@ -71,7 +71,7 @@ export async function fetchAllFeeds(db: D1Database): Promise<number> {
         const id = crypto.randomUUID()
         await db
           .prepare('INSERT INTO breaking_news_cache (id, source_name, headline, link, pub_date, source_domain, thumbnail_url) VALUES (?, ?, ?, ?, ?, ?, ?)')
-          .bind(id, item.source_name, item.headline, item.link, item.pub_date, item.source_domain, item.thumbnail_url)
+          .bind(id, item.source_name, item.headline, item.link, item.pub_date, item.source_domain, item.thumbnail_url ?? null)
           .run()
         totalNew++
       }
