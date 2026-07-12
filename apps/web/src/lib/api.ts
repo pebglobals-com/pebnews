@@ -43,17 +43,5 @@ export const api = {
       request<{ items: any[] }>(`/api/rss/breaking?limit=${limit}`),
     curated: () => request<{ featured: any[]; breakingArticles: any[] }>('/api/rss/curated/feed'),
   },
-  auth: {
-    readerSignup: (name: string, email: string, password: string) =>
-      request<{ token: string; user: any }>('/api/auth/reader/signup', {
-        method: 'POST',
-        body: JSON.stringify({ name, email, password }),
-      }),
-    login: (email: string, password: string) =>
-      request<{ token: string; user: any }>('/api/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      }),
-    me: () => request<{ id: string; name: string; email: string; role: string }>('/api/auth/me'),
-  },
+
 }

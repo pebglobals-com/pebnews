@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, Menu, X, ChevronDown, User } from 'lucide-react'
+import { Search, Menu, X, ChevronDown } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 
 const sections = [
@@ -25,7 +25,6 @@ export default function Header() {
   const [catOpen, setCatOpen] = useState(false)
   const catRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
-  const token = localStorage.getItem('token')
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -48,24 +47,6 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
-      {/* Top bar */}
-      <div className="border-b border-gray-200 bg-gray-50">
-        <div className="mx-auto flex max-w-7xl items-center justify-end px-4 py-1.5 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            {token ? (
-              <Link to="/profile" className="text-xs text-gray-600 hover:text-gray-900 flex items-center gap-1">
-                <User className="h-3 w-3" /> Account
-              </Link>
-            ) : (
-              <>
-                <Link to="/login" className="text-xs text-gray-600 hover:text-gray-900">Login</Link>
-                <Link to="/signup" className="text-xs font-medium text-blue-600 hover:text-blue-800">Sign Up</Link>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-
       {/* Logo + Search */}
       <div className="border-b border-gray-200">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">

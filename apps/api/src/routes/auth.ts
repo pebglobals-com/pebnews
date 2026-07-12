@@ -11,12 +11,6 @@ function makeToken(payload: JwtPayload, secret: string): Promise<string> {
   return sign({ ...payload, exp: Math.floor(Date.now() / 1000) + 86400 }, secret) // 24h
 }
 
-const readerSignupSchema = z.object({
-  name: z.string().min(1).max(100),
-  email: z.string().email(),
-  password: z.string().min(6).max(128),
-})
-
 const editorSignupSchema = z.object({
   name: z.string().min(1).max(100),
   email: z.string().email(),
@@ -29,26 +23,6 @@ const loginSchema = z.object({
 })
 
 const app = new Hono<{ Bindings: { DB: D1Database; JWT_SECRET: string } }>()
-
-// Reader signup — no domain restriction
-app.post('/reader/signup', zValidator('json', readerSignupSchema), async (c) => {
-  const { name, email, password } = c.req.valid('json')
-  const db = c.env.DB
-
-  const existing = await getUserByEmail(db, email)
-  if (existing) {
-    return c.json({ error: 'Email already registered' }, 409)
-  }
-
-  const bcrypt = await import('bcryptjs')
-  const password_hash = await bcrypt.hash(password, 10)
-  const id = crypto.randomUUID()
-
-  await createUser(db, { id, name, email, password_hash, role: 'reader' })
-
-  const token = await makeToken({ user_id: id, role: 'reader', email } satisfies JwtPayload, c.env.JWT_SECRET)
-  return c.json({ token, user: { id, name, email, role: 'reader' } })
-})
 
 // Editorial signup — domain restricted
 app.post('/editor/signup', zValidator('json', editorSignupSchema), domainCheck, async (c) => {
@@ -70,7 +44,7 @@ app.post('/editor/signup', zValidator('json', editorSignupSchema), domainCheck, 
   return c.json({ token, user: { id, name, email, role: 'editor' } })
 })
 
-// Login (works for both reader and editor)
+// Login (works for editors and admins)
 app.post('/login', zValidator('json', loginSchema), async (c) => {
   const { email, password } = c.req.valid('json')
   const db = c.env.DB
