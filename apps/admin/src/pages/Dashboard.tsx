@@ -18,6 +18,7 @@ export default function Dashboard() {
   function handleLogout() {
     localStorage.removeItem('token')
     localStorage.removeItem('role')
+    localStorage.setItem('draft_backup', JSON.stringify({ path: '/editor/dashboard', reason: 'unauthenticated' }))
     navigate('/editor/login')
   }
 

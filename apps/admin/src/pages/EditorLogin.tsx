@@ -16,7 +16,11 @@ export default function EditorLogin() {
       try {
         const parsed = JSON.parse(backup)
         if (parsed.path) {
-          setRestoreMsg('Your session expired. Login to return to where you left off.')
+          if (parsed.reason === 'expired') {
+            setRestoreMsg('Your session expired. Please sign in again.')
+          } else {
+            setRestoreMsg('Please sign in to continue.')
+          }
         }
       } catch { /* ignore */ }
     }
@@ -28,11 +32,6 @@ export default function EditorLogin() {
     setLoading(true)
     try {
       const res = await adminApi.auth.login(email, password)
-      if (res.user.role !== 'editor' && res.user.role !== 'admin') {
-        setError('This portal is for editorial staff only')
-        setLoading(false)
-        return
-      }
       localStorage.setItem('token', res.token)
       localStorage.setItem('role', res.user.role)
       localStorage.setItem('user_name', res.user.name)

@@ -4,10 +4,13 @@ function getToken(): string | null {
   return localStorage.getItem('token')
 }
 
-function redirectToLogin(saved?: string) {
+function redirectToLogin(reason: 'expired' | 'unauthenticated') {
   localStorage.removeItem('token')
   localStorage.removeItem('role')
-  if (saved) localStorage.setItem('draft_backup', saved)
+  localStorage.setItem('draft_backup', JSON.stringify({
+    path: window.location.pathname + window.location.search,
+    reason,
+  }))
   window.location.href = '/editor/login'
 }
 
@@ -22,12 +25,8 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     },
   })
   if (!res.ok) {
-    // 401 — token invalid or expired
     if (res.status === 401) {
-      redirectToLogin(
-        JSON.stringify({ path: window.location.pathname + window.location.search })
-      )
-      // throw to stop execution — redirect will happen
+      redirectToLogin(getToken() ? 'expired' : 'unauthenticated')
       throw new Error('Session expired. Redirecting to login...')
     }
     const err = await res.json().catch(() => ({ error: 'Request failed' }))
@@ -86,7 +85,7 @@ export const adminApi = {
         body: formData,
       })
       if (res.status === 401) {
-        redirectToLogin()
+        redirectToLogin(getToken() ? 'expired' : 'unauthenticated')
         throw new Error('Session expired')
       }
       if (!res.ok) {

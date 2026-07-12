@@ -18,6 +18,10 @@ app.use('/*', cors({
     'https://pebnews-admin.pages.dev',
     'https://pebnews-admin.talent-loop.org',
   ],
+  allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  exposeHeaders: ['Content-Length'],
+  maxAge: 600,
   credentials: true,
 }))
 
