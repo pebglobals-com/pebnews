@@ -30,6 +30,15 @@ export default {
       maxWidth: {
         text: '65ch',
       },
+      animation: {
+        'ticker': 'ticker-scroll 80s linear infinite',
+      },
+      keyframes: {
+        'ticker-scroll': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
     },
   },
   plugins: [],
