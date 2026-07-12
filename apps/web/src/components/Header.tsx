@@ -70,7 +70,7 @@ export default function Header() {
       <div className="border-b border-gray-200">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <Link to="/">
-            <img src="/logo.png" alt="PEB News" className="h-14 w-auto sm:h-16" />
+            <img src="/logo.png" alt="PEB News" className="h-20 w-auto sm:h-24" />
           </Link>
 
           <div className="flex items-center gap-4">
