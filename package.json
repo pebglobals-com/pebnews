@@ -1,0 +1,19 @@
+{
+  "name": "pebnews-rebuild",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev -w apps/web",
+    "dev:admin": "npm run dev -w apps/admin",
+    "dev:api": "npm run dev -w apps/api",
+    "build:web": "npm run build -w apps/web",
+    "build:admin": "npm run build -w apps/admin",
+    "build:api": "npm run build -w apps/api",
+    "db:execute": "wrangler d1 execute pebnews-db --file=apps/api/src/db/schema.sql",
+    "db:seed": "wrangler d1 execute pebnews-db --file=apps/api/src/db/seed.sql",
+    "db:list": "wrangler d1 execute pebnews-db --command=\"SELECT * FROM sections;\""
+  }
+}

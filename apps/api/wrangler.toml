@@ -1,0 +1,29 @@
+name = "pebnews-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "pebnews-db"
+database_id = ""
+
+# R2 Bucket
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "pebnews-images"
+
+# KV Namespace
+[[kv_namespaces]]
+binding = "KV"
+id = ""
+
+# Cron Trigger for RSS ingestion
+[triggers]
+crons = ["*/15 * * * *"]
+
+# Environment variables
+[vars]
+ALLOWED_EDITOR_DOMAIN = "pebnews.com"
+JWT_SECRET = "change-this-in-production"
+RSS_FETCH_INTERVAL_CRON = "*/15 * * * *"
