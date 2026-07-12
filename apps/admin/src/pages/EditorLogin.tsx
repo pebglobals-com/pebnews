@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { adminApi } from '../lib/api'
 
@@ -7,7 +7,20 @@ export default function EditorLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [restoreMsg, setRestoreMsg] = useState('')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const backup = localStorage.getItem('draft_backup')
+    if (backup) {
+      try {
+        const parsed = JSON.parse(backup)
+        if (parsed.path) {
+          setRestoreMsg('Your session expired. Login to return to where you left off.')
+        }
+      } catch { /* ignore */ }
+    }
+  }, [])
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -22,6 +35,21 @@ export default function EditorLogin() {
       }
       localStorage.setItem('token', res.token)
       localStorage.setItem('role', res.user.role)
+      localStorage.setItem('user_name', res.user.name)
+
+      const backup = localStorage.getItem('draft_backup')
+      localStorage.removeItem('draft_backup')
+
+      if (backup) {
+        try {
+          const parsed = JSON.parse(backup)
+          if (parsed.path && parsed.path !== '/editor/dashboard') {
+            navigate(parsed.path)
+            return
+          }
+        } catch { /* ignore */ }
+      }
+
       navigate('/editor/dashboard')
     } catch (err: any) {
       setError(err.message || 'Login failed')
@@ -37,6 +65,11 @@ export default function EditorLogin() {
         <p className="mt-1 text-center text-sm text-surface-500">
           Sign in with your work email
         </p>
+        {restoreMsg && (
+          <div className="mt-4 rounded-lg bg-amber-50 p-3 text-sm text-amber-700">
+            {restoreMsg}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           {error && (
             <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</div>

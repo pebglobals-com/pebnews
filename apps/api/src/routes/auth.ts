@@ -7,6 +7,10 @@ import { domainCheck } from '../middleware/domainCheck'
 import { authenticate } from '../middleware/auth'
 import type { JwtPayload, User } from '@pebnews/shared-types'
 
+function makeToken(payload: JwtPayload, secret: string): Promise<string> {
+  return sign({ ...payload, exp: Math.floor(Date.now() / 1000) + 86400 }, secret) // 24h
+}
+
 const readerSignupSchema = z.object({
   name: z.string().min(1).max(100),
   email: z.string().email(),
@@ -42,7 +46,7 @@ app.post('/reader/signup', zValidator('json', readerSignupSchema), async (c) => 
 
   await createUser(db, { id, name, email, password_hash, role: 'reader' })
 
-  const token = await sign({ user_id: id, role: 'reader', email } satisfies JwtPayload, c.env.JWT_SECRET)
+  const token = await makeToken({ user_id: id, role: 'reader', email } satisfies JwtPayload, c.env.JWT_SECRET)
   return c.json({ token, user: { id, name, email, role: 'reader' } })
 })
 
@@ -62,7 +66,7 @@ app.post('/editor/signup', zValidator('json', editorSignupSchema), domainCheck, 
 
   await createUser(db, { id, name, email, password_hash, role: 'editor' })
 
-  const token = await sign({ user_id: id, role: 'editor', email } satisfies JwtPayload, c.env.JWT_SECRET)
+  const token = await makeToken({ user_id: id, role: 'editor', email } satisfies JwtPayload, c.env.JWT_SECRET)
   return c.json({ token, user: { id, name, email, role: 'editor' } })
 })
 
@@ -82,7 +86,7 @@ app.post('/login', zValidator('json', loginSchema), async (c) => {
     return c.json({ error: 'Invalid email or password' }, 401)
   }
 
-  const token = await sign({ user_id: user.id, role: user.role, email: user.email } satisfies JwtPayload, c.env.JWT_SECRET)
+  const token = await makeToken({ user_id: user.id, role: user.role, email: user.email } satisfies JwtPayload, c.env.JWT_SECRET)
   return c.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } })
 })
 

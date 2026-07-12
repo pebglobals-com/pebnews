@@ -5,9 +5,10 @@ import articleRoutes from './routes/articles'
 import sectionRoutes from './routes/sections'
 import viewRoutes from './routes/views'
 import rssRoutes from './routes/rss'
+import uploadRoutes from './routes/upload'
 import { fetchAllFeeds } from './jobs/fetchRssFeeds'
 
-const app = new Hono<{ Bindings: { DB: D1Database; KV: KVNamespace; JWT_SECRET: string } }>()
+const app = new Hono<{ Bindings: { DB: D1Database; KV: KVNamespace; R2: R2Bucket; JWT_SECRET: string } }>()
 
 app.use('/*', cors())
 
@@ -16,6 +17,7 @@ app.route('/api/articles', articleRoutes)
 app.route('/api/sections', sectionRoutes)
 app.route('/api/views', viewRoutes)
 app.route('/api/rss', rssRoutes)
+app.route('/api/upload', uploadRoutes)
 
 app.get('/api/health', (c) => c.json({ status: 'ok' }))
 
