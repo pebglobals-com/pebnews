@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../lib/api'
-import ArticleCard from '../components/ArticleCard'
 import BreakingNewsGrid from '../components/BreakingNewsGrid'
 
 interface SectionGroup {
@@ -17,17 +16,10 @@ function timeAgo(dateStr: string): string {
   const diff = now - date
   const hours = Math.floor(diff / 3600000)
   if (hours < 1) return 'just now'
-  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`
+  if (hours < 24) return `${hours}h ago`
   const days = Math.floor(hours / 24)
-  if (days < 7) return `${days} day${days === 1 ? '' : 's'} ago`
+  if (days < 7) return `${days}d ago`
   return new Date(dateStr).toLocaleDateString()
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('en-US', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-  })
 }
 
 function AdBlock() {
@@ -35,6 +27,44 @@ function AdBlock() {
     <div className="flex h-40 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-sm text-gray-400">
       PLACE YOUR ADS HERE
     </div>
+  )
+}
+
+function ArticleCard({ article, section }: { article: any; section?: SectionGroup }) {
+  const sec = section || { name: article.section_name, slug: article.section_slug, color_hex: article.section_color_hex }
+  const d = new Date(article.published_at)
+  const path = `/article/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${article.slug}`
+
+  return (
+    <Link to={path} className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
+      {article.featured_image_url ? (
+        <div className="aspect-[16/10] overflow-hidden bg-gray-100">
+          <img src={article.featured_image_url} alt="" className="h-full w-full object-cover transition-transform duration-150 group-hover:scale-[1.03]" loading="lazy" />
+        </div>
+      ) : (
+        <div className="aspect-[16/10] flex items-center justify-center bg-gray-100">
+          <span className="text-xs text-gray-300">No image</span>
+        </div>
+      )}
+      <div className="flex flex-1 flex-col p-3">
+        <span
+          className="inline-flex items-center self-start rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white"
+          style={{ backgroundColor: sec.color_hex }}
+        >
+          {sec.name}
+        </span>
+        <h3 className="mt-1.5 text-sm font-bold leading-snug text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+          {article.title}
+        </h3>
+        {article.excerpt && (
+          <p className="mt-1 text-xs leading-relaxed text-gray-500 line-clamp-2">{article.excerpt}</p>
+        )}
+        <div className="mt-auto pt-2 flex items-center gap-2 text-[10px] text-gray-400">
+          <span>{timeAgo(article.published_at)}</span>
+          {article.view_count > 0 && <span>{article.view_count} views</span>}
+        </div>
+      </div>
+    </Link>
   )
 }
 
@@ -128,36 +158,19 @@ export default function Home() {
       <div className="flex flex-col gap-8 lg:flex-row">
         {/* Main Content */}
         <div className="flex-1 min-w-0">
-          {/* Recent News */}
-          <section className="mb-8">
-            <h2 className="mb-4 text-lg font-bold text-gray-900 border-b-2 border-gray-900 pb-1">
-              Recent News
-            </h2>
-            {sections.length > 0 && sections[0].articles.slice(0, 4).map((article: any, i: number) => {
-              const section = sections.find((s) => s.slug === article.section_slug) || sections[0]
-              const d = new Date(article.published_at)
-              const path = `/article/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${article.slug}`
-              return (
-                <Link key={article.id} to={path} className={`group flex gap-4 py-4 ${i > 0 ? 'border-t border-gray-100' : ''}`}>
-                  {article.featured_image_url && (
-                    <div className="w-24 shrink-0 overflow-hidden rounded md:w-32">
-                      <img src={article.featured_image_url} alt="" className="h-20 w-full object-cover md:h-24" loading="lazy" />
-                    </div>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <span className="text-xs font-semibold text-blue-600">{section.name} &nbsp;/&nbsp; {timeAgo(article.published_at)}</span>
-                    <h3 className="mt-0.5 text-sm font-semibold leading-snug text-gray-900 group-hover:text-blue-600 transition-colors">
-                      {article.title}
-                    </h3>
-                    {article.excerpt && (
-                      <p className="mt-0.5 text-xs text-gray-500 line-clamp-2">{article.excerpt}</p>
-                    )}
-                    <p className="mt-1 text-xs text-gray-400">{article.view_count ?? 0} views</p>
-                  </div>
-                </Link>
-              )
-            })}
-          </section>
+          {/* Recent News — first section articles as cards */}
+          {sections.length > 0 && sections[0].articles.length > 0 && (
+            <section className="mb-8">
+              <h2 className="mb-4 text-lg font-bold text-gray-900 border-b-2 border-gray-900 pb-1">
+                Recent News
+              </h2>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {sections[0].articles.slice(0, 4).map((article: any) => (
+                  <ArticleCard key={article.id} article={article} />
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Section Blocks */}
           {sections.slice(0, 3).map((section) => (
@@ -169,30 +182,10 @@ export default function Home() {
                 </Link>
               </div>
               {section.articles.length > 0 ? (
-                <div className="space-y-0">
-                  {section.articles.slice(0, 5).map((article: any, i: number) => {
-                    const d = new Date(article.published_at)
-                    const path = `/article/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${article.slug}`
-                    return (
-                      <Link key={article.id} to={path} className={`group flex gap-4 py-3 ${i > 0 ? 'border-t border-gray-100' : ''}`}>
-                        {article.featured_image_url && (
-                          <div className="w-20 shrink-0 overflow-hidden rounded md:w-24">
-                            <img src={article.featured_image_url} alt="" className="h-16 w-full object-cover md:h-20" loading="lazy" />
-                          </div>
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <span className="text-xs font-semibold text-blue-600">{section.name} &nbsp;/&nbsp; {timeAgo(article.published_at)}</span>
-                          <h3 className="mt-0.5 text-sm font-semibold leading-snug text-gray-900 group-hover:text-blue-600 transition-colors">
-                            {article.title}
-                          </h3>
-                          <div className="mt-1 flex items-center gap-3 text-xs text-gray-400">
-                            {article.author_name && <span>By: {article.author_name}</span>}
-                            <span>{article.view_count ?? 0} views</span>
-                          </div>
-                        </div>
-                      </Link>
-                    )
-                  })}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {section.articles.slice(0, 4).map((article: any) => (
+                    <ArticleCard key={article.id} article={article} section={section} />
+                  ))}
                 </div>
               ) : (
                 <p className="py-4 text-sm text-gray-400">No articles yet.</p>
