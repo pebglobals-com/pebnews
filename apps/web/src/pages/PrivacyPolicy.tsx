@@ -61,7 +61,7 @@ export default function PrivacyPolicy() {
           </div>
           <div className="flex items-center gap-3">
             <Phone className="h-5 w-5 text-gray-500" />
-            <span>+1 (555) 123-4567</span>
+            <span>+234 (0) 800 000 0000</span>
           </div>
         </div>
       </div>

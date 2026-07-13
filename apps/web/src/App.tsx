@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import BreakingNewsStrip from './components/BreakingNewsStrip'
+import ScrollToTop from './components/ScrollToTop'
 import Home from './pages/Home'
 import Section from './pages/Section'
 import Article from './pages/Article'
@@ -16,6 +17,7 @@ import './index.css'
 export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
+      <ScrollToTop />
       <BreakingNewsStrip />
       <Header />
       <main className="flex-1">

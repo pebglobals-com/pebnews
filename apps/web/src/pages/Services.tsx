@@ -167,7 +167,7 @@ export default function Services() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button className="px-8 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors flex items-center gap-2">
             <Phone className="h-5 w-5" />
-            Call Us: (555) 123-4567
+            Call Us: +234 (0) 800 000 0000
           </button>
           <button className="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
             <Mail className="h-5 w-5" />

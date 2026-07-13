@@ -121,15 +121,15 @@ export default function Home() {
              to={`/article/${new Date(hero.published_at).getFullYear()}/${String(new Date(hero.published_at).getMonth() + 1).padStart(2, '0')}/${String(new Date(hero.published_at).getDate()).padStart(2, '0')}/${hero.slug}`}
              className="group block overflow-hidden rounded-lg"
            >
-               {hero.featured_image_url && (
-                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                {hero.featured_image_url && (
+                  <div className="relative h-[280px] md:h-[420px] w-full overflow-hidden rounded-lg">
 <img
                       src={hero.featured_image_url}
                       alt={hero.title}
-                      className="absolute inset-0 h-full w-full object-cover object-top"
+                      className="absolute inset-0 h-full w-full object-cover object-center"
                    />
-                   <div className="absolute inset-0 bg-black/40" />
-                   <div className="relative p-6 md:p-8 lg:p-10">
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/75" />
+                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 lg:p-10">
                      <span
                        className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white mb-3"
                        style={{ backgroundColor: hero.section_color_hex }}

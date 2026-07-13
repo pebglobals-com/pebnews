@@ -36,7 +36,7 @@ export default function AdCard() {
         </div>
         
         <div className="mt-4 border-t border-amber-200 pt-3">
-          <p className="text-xs text-gray-600">Starting at $500/month</p>
+          <p className="text-xs text-gray-600">Starting at &#x20A6;500,000/month</p>
           <p className="text-xs text-amber-700 font-medium"> Premium placement available</p>
         </div>
       </div>

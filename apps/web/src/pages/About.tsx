@@ -75,7 +75,7 @@ export default function About() {
         <h2 className="mb-4 text-3xl font-bold text-gray-900">Our Story</h2>
         <div className="mx-auto max-w-2xl space-y-4 text-gray-600">
           <p>
-            Founded in 2020, PEB News began as a small team of passionate journalists who saw a need for comprehensive local coverage in an era of declining traditional media presence. What started as a modest operation serving the Pacific Northwest has grown into a trusted source for news, investigation, and community storytelling.
+            Founded in 2020, PEB News began as a small team of passionate journalists who saw a need for comprehensive local coverage in an era of declining traditional media presence. What started as a modest operation serving the Niger Delta region has grown into a trusted source for news, investigation, and community storytelling.
           </p>
           <p>
             Over the years, we've expanded our reach while staying true to our core mission: providing deeply reported, locally relevant news that matters to the everyday person. Today, we serve readers across the region with professional journalism that holds power accountable and gives voice to those often overlooked by larger media outlets.
