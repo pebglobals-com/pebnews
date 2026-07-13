@@ -14,6 +14,8 @@ function redirectToLogin(reason: 'expired' | 'unauthenticated') {
   window.location.href = '/editor/login'
 }
 
+const AUTH_ROUTES = ['/api/auth/login', '/api/auth/editor/signup']
+
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const token = getToken()
   const res = await fetch(`${API_BASE}${path}`, {
@@ -25,7 +27,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     },
   })
   if (!res.ok) {
-    if (res.status === 401) {
+    if (res.status === 401 && !AUTH_ROUTES.includes(path)) {
       redirectToLogin(getToken() ? 'expired' : 'unauthenticated')
       throw new Error('Session expired. Redirecting to login...')
     }
