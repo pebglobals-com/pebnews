@@ -29,7 +29,7 @@ export default function PrivacyPolicy() {
         <ul>
           <li>Provide and improve our services</li>
           <li>Send you updates and news</li>
-          <n>Communicate with you</li>
+          <li>Communicate with you</li>
           <li>Monitor and analyze usage of our services</li>
         </ul>
 

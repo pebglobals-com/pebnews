@@ -37,7 +37,7 @@ export default function TermsOfService() {
           All content on PEB News, including text, graphics, logos, and software, is the property of PEB News or our licensors and is protected by copyright and other intellectual property laws.
         </p>
 
-        <h2 className="text-2al font-bold text-gray-900">Limitation of Liability</h2>
+        <h2 className="text-al font-bold text-gray-900">Limitation of Liability</h2>
         <p>
           PEB News shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services.
         </p>

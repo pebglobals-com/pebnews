@@ -5,7 +5,7 @@ import BreakingNewsStrip from './components/BreakingNewsStrip'
 import Home from './pages/Home'
 import Section from './pages/Section'
 import Article from './pages/Article'
-import Search人も多いSearch from './pages/Search'
+import Search from './pages/Search'
 import Advertise from './pages/Advertise'
 import About from './pages/About'
 import Services from './pages/Services'
@@ -25,7 +25,7 @@ export default function App() {
           <Route path="/article/:year/:month/:day/:slug" element={<Article />} />
           <Route path="/search" element={<Search />} />
           <Route path="/advertise" element={<Advertise />} />
-<Route path="/about" element={<About />} />
+          <Route path="/about" element={<About />} />
            <Route path="/services" element={<Services />} />
            <Route path="/privacy" element={<PrivacyPolicy />} />
            <Route path="/terms" element={<TermsOfService />} />
