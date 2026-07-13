@@ -99,10 +99,10 @@ export default function Home() {
     return (
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="animate-pulse space-y-8">
-          <div className="h-64 rounded-xl bg-gray-200" />
+          <div className="h-48 md:h-64 rounded-xl bg-gray-200" />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-48 rounded-xl bg-gray-200" />
+              <div key={i} className="h-64 rounded-xl bg-gray-200" />
             ))}
           </div>
         </div>
@@ -119,15 +119,15 @@ export default function Home() {
             to={`/article/${new Date(hero.published_at).getFullYear()}/${String(new Date(hero.published_at).getMonth() + 1).padStart(2, '0')}/${String(new Date(hero.published_at).getDate()).padStart(2, '0')}/${hero.slug}`}
             className="group block overflow-hidden rounded-lg border border-gray-200 bg-white md:flex"
           >
-            {hero.featured_image_url && (
-              <div className="md:w-3/5">
-                <img
-                  src={hero.featured_image_url}
-                  alt={hero.title}
-                  className="h-64 w-full object-cover md:h-full"
-                />
-              </div>
-            )}
+             {hero.featured_image_url && (
+               <div className="md:w-3/5">
+                 <img
+                   src={hero.featured_image_url}
+                   alt={hero.title}
+                   className="h-48 w-full object-cover md:h-full"
+                 />
+               </div>
+             )}
             <div className="flex flex-col justify-center p-6 md:w-2/5">
               <span
                 className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white"
@@ -182,8 +182,8 @@ export default function Home() {
                 </Link>
               </div>
               {section.articles.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {section.articles.slice(0, 4).map((article: any) => (
+                <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+                  {section.articles.slice(0, 8).map((article: any) => (
                     <ArticleCard key={article.id} article={article} section={section} />
                   ))}
                 </div>
