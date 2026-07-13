@@ -7,6 +7,8 @@ import Section from './pages/Section'
 import Article from './pages/Article'
 import Search from './pages/Search'
 import Advertise from './pages/Advertise'
+import About from './pages/About'
+import Services from './pages/Services'
 import './index.css'
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
           <Route path="/article/:year/:month/:day/:slug" element={<Article />} />
           <Route path="/search" element={<Search />} />
           <Route path="/advertise" element={<Advertise />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
         </Routes>
       </main>
       <Footer />
