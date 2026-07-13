@@ -44,7 +44,7 @@ export default function TermsOfService() {
 
         <h2 className="text-2xl font-bold text-gray-900">Governing Law</h2>
         <p>
-          These Terms shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of law provisions.
+          These Terms shall be governed by and construed in accordance with the laws of the Federal Republic of Nigeria, without regard to its conflict of law provisions.
         </p>
 
         <h2 className="text-2xl font-bold text-gray-900">Changes to Terms</h2>

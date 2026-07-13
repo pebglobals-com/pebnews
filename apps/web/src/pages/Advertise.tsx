@@ -8,7 +8,7 @@ export default function Advertise() {
       id: 'sidebar-banner',
       title: 'Sidebar Banner',
       description: 'Eye-catching rectangle sidebar ad',
-      price: '$500/month',
+      price: '₦50,000/month',
       features: [
         'Full width sidebar (300x250)',
         'Rotating monthly placement',
@@ -24,7 +24,7 @@ export default function Advertise() {
       id: 'homepage-featured',
       title: 'Homepage Featured Slot',
       description: 'Premium homepage positioning',
-      price: '$1,500/month',
+      price: '₦150,000/month',
       features: [
         'Above-the-fold placement',
         'Homepage hero companion',
@@ -42,7 +42,7 @@ export default function Advertise() {
       id: 'breaking-news-sponsor',
       title: 'Breaking News Sponsor',
       description: 'Sponsor breaking news strips',
-      price: '$2,000/month',
+      price: '₦200,000/month',
       features: [
         'Logo + tagline in breaking ticker',
         'Branding across all breaking news',

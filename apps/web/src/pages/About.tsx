@@ -7,7 +7,7 @@ export default function About() {
       <div className="mb-12 text-center">
         <h1 className="text-4xl font-bold text-gray-900 sm:text-5xl">About PEB News</h1>
         <p className="mt-4 text-lg text-gray-600">
-          Independent journalism dedicated to serving the communities of the Pacific Northwest
+          Independent journalism dedicated to serving the communities of Nigeria
         </p>
       </div>
 
