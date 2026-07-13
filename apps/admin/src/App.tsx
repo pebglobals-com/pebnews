@@ -23,27 +23,28 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
       return
     }
 
-    adminApi.auth.me()
-      .then((user) => {
-        if (user.role === 'editor' || user.role === 'admin') {
-          setStatus('valid')
-        } else {
-          localStorage.removeItem('token')
-          localStorage.removeItem('role')
-          setStatus('invalid')
-          navigate('/editor/login', { replace: true })
-        }
-      })
-      .catch((err: any) => {
-        if (err?.status === 401) {
-          localStorage.removeItem('token')
-          localStorage.removeItem('role')
-          setStatus('invalid')
-          navigate('/editor/login', { replace: true })
-        } else {
-          setStatus('valid')
-        }
-      })
+    try {
+      const payload = JSON.parse(
+        atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
+      )
+      if (payload.exp && payload.exp * 1000 < Date.now()) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
+        setStatus('invalid')
+        navigate('/editor/login', { replace: true })
+        return
+      }
+    } catch {
+      localStorage.removeItem('token')
+      localStorage.removeItem('role')
+      setStatus('invalid')
+      navigate('/editor/login', { replace: true })
+      return
+    }
+
+    setStatus('valid')
+
+    adminApi.auth.me().catch(() => {})
   }, [navigate])
 
   if (status === 'loading') {
