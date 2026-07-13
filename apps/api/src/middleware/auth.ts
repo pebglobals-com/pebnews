@@ -15,7 +15,7 @@ export async function authenticate(c: Context, next: Next) {
       console.error('JWT_SECRET is not set in environment')
       return c.json({ error: 'Server configuration error' }, 500)
     }
-    const payload = await verify(token, secret) as unknown as JwtPayload
+    const payload = await verify(token, secret, 'HS256') as unknown as JwtPayload
     c.set('user', payload)
     return next()
   } catch (e: any) {

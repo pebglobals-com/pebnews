@@ -8,7 +8,7 @@ import { authenticate } from '../middleware/auth'
 import type { JwtPayload, User } from '@pebnews/shared-types'
 
 function makeToken(payload: JwtPayload, secret: string): Promise<string> {
-  return sign({ ...payload, exp: Math.floor(Date.now() / 1000) + 43200 }, secret) // 12h
+  return sign({ ...payload, exp: Math.floor(Date.now() / 1000) + 43200 }, secret, 'HS256') // 12h
 }
 
 const editorSignupSchema = z.object({
