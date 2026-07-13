@@ -28,6 +28,8 @@ export const api = {
     bySection: (slug: string, limit = 10) =>
       request<{ articles: any[] }>(`/api/articles/section/${slug}?limit=${limit}`),
     get: (slug: string) => request<{ article: any }>(`/api/articles/${slug}`),
+    search: (q: string) =>
+      request<{ articles: any[] }>(`/api/articles/search?q=${encodeURIComponent(q)}`),
   },
   views: {
     record: (articleId: string) =>

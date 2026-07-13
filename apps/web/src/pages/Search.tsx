@@ -69,13 +69,8 @@ export default function SearchResults() {
     }
     setLoading(true)
     setError('')
-    api.articles.list(1000).then((data) => {
-      const articles = data.articles.filter((a: any) =>
-        a.title.toLowerCase().includes(query.toLowerCase()) ||
-        a.excerpt.toLowerCase().includes(query.toLowerCase()) ||
-        a.body.toLowerCase().includes(query.toLowerCase())
-      )
-      setResults(articles)
+    api.articles.search(query).then((data) => {
+      setResults(data.articles)
       setLoading(false)
     }).catch(() => {
       setError('Search failed. Try again later.')
