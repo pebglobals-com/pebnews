@@ -27,12 +27,13 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     },
   })
   if (!res.ok) {
+    const errBody = await res.json().catch(() => ({ error: 'Request failed' }))
     if (res.status === 401 && !AUTH_ROUTES.includes(path)) {
-      redirectToLogin(getToken() ? 'expired' : 'unauthenticated')
-      throw new Error('Session expired. Redirecting to login...')
+      const e = new Error(errBody.error || 'Session expired') as any
+      e.status = 401
+      throw e
     }
-    const err = await res.json().catch(() => ({ error: 'Request failed' }))
-    throw new Error(err.error || 'Request failed')
+    throw new Error(errBody.error || 'Request failed')
   }
   return res.json()
 }
@@ -87,8 +88,9 @@ export const adminApi = {
         body: formData,
       })
       if (res.status === 401) {
-        redirectToLogin(getToken() ? 'expired' : 'unauthenticated')
-        throw new Error('Session expired')
+        const e = new Error('Session expired') as any
+        e.status = 401
+        throw e
       }
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: 'Upload failed' }))

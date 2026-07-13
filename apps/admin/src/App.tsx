@@ -34,11 +34,15 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
           navigate('/editor/login', { replace: true })
         }
       })
-      .catch(() => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('role')
-        setStatus('invalid')
-        navigate('/editor/login', { replace: true })
+      .catch((err: any) => {
+        if (err?.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('role')
+          setStatus('invalid')
+          navigate('/editor/login', { replace: true })
+        } else {
+          setStatus('valid')
+        }
       })
   }, [navigate])
 
