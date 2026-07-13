@@ -19,8 +19,8 @@ export default function ImageUploader({ value, onChange, label }: Props) {
     try {
       const res = await adminApi.upload.image(file)
       onChange(res.url)
-    } catch {
-      window.alert('Failed to upload image')
+    } catch (err: any) {
+      window.alert(err?.message || 'Failed to upload image')
     } finally {
       setUploading(false)
     }
