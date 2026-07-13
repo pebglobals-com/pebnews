@@ -74,7 +74,7 @@ export default function Section() {
                        <Link key={article.id} to={path} className={`group flex gap-4 py-4 ${i > 0 ? 'border-t border-gray-100' : ''}`}>
                           {article.featured_image_url && (
                             <div className="w-24 shrink-0 aspect-[16/9] overflow-hidden rounded md:w-32">
-                              <img src={article.featured_image_url} alt="" className="h-full w-full object-cover" loading="lazy" />
+                              <img src={article.featured_image_url} alt="" className="h-full w-full object-cover object-[50%_20%]" loading="lazy" />
                             </div>
                           )}
                          <div className="min-w-0 flex-1">

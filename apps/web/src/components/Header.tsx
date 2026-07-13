@@ -77,12 +77,6 @@ export default function Header() {
                 <Search className="h-5 w-5" />
               </button>
             )}
-            <Link
-              to="/advertise"
-              className="inline-flex items-center rounded-md bg-amber-400 px-2.5 py-1.5 text-xs font-semibold text-amber-900 hover:bg-amber-500 transition-colors"
-            >
-              Place Your Ad
-            </Link>
             <button className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>

@@ -43,7 +43,7 @@ export default function ArticleCard({
           <img
             src={featuredImageUrl}
             alt={title}
-            className="h-full w-full object-cover transition-transform duration-150 group-hover:scale-[1.02]"
+            className="h-full w-full object-cover object-[50%_20%] transition-transform duration-150 group-hover:scale-[1.02]"
             loading="lazy"
           />
         </div>

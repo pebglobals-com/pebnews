@@ -45,7 +45,7 @@ export default function BreakingNewsGrid() {
                 <img
                   src={item.thumbnail_url}
                   alt=""
-                  className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  className="h-full w-full object-cover object-[50%_20%] transition-transform group-hover:scale-105"
                   loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none'

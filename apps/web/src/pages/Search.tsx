@@ -25,7 +25,7 @@ function ArticleCard({ article }: { article: any }) {
     >
       {article.featured_image_url ? (
         <div className="aspect-[16/10] overflow-hidden bg-gray-100">
-          <img src={article.featured_image_url} alt="" className="h-full w-full object-cover transition-transform duration-150 group-hover:scale-[1.03]" loading="lazy" />
+          <img src={article.featured_image_url} alt="" className="h-full w-full object-cover object-[50%_20%] transition-transform duration-150 group-hover:scale-[1.03]" loading="lazy" />
         </div>
       ) : (
         <div className="aspect-[16/10] flex items-center justify-center bg-gray-100">

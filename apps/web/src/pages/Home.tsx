@@ -32,7 +32,7 @@ function ArticleCard({ article, section }: { article: any; section?: SectionGrou
     <Link to={path} className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md">
       {article.featured_image_url ? (
         <div className="aspect-[16/10] overflow-hidden bg-gray-100">
-          <img src={article.featured_image_url} alt="" className="h-full w-full object-cover transition-transform duration-150 group-hover:scale-[1.03]" loading="lazy" />
+          <img src={article.featured_image_url} alt="" className="h-full w-full object-cover object-[50%_20%] transition-transform duration-150 group-hover:scale-[1.03]" loading="lazy" />
         </div>
       ) : (
         <div className="aspect-[16/10] flex items-center justify-center bg-gray-100">
@@ -126,7 +126,7 @@ export default function Home() {
                   <img
                     src={hero.featured_image_url}
                     alt={hero.title}
-                    className="h-full w-full object-cover object-center"
+                    className="h-full w-full object-cover object-[50%_20%]"
                   />
                 </div>
                 <div className="flex flex-1 flex-col justify-center h-[200px] md:h-[320px] p-4 md:p-6 lg:p-8">
