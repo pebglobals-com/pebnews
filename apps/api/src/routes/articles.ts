@@ -45,6 +45,26 @@ app.get('/section/:slug', async (c) => {
   return c.json({ articles })
 })
 
+// Public: search articles (MUST be before catch-all /:slug)
+app.get('/search', async (c) => {
+  const q = c.req.query('q')
+  if (!q) return c.json({ articles: [] })
+  const db = c.env.DB
+  const like = `%${q}%`
+  const rows = await db
+    .prepare(
+      `SELECT a.*, s.name AS section_name, s.slug AS section_slug, s.color_hex AS section_color_hex, u.name AS author_name
+       FROM articles a
+       JOIN sections s ON s.id = a.section_id
+       JOIN users u ON u.id = a.author_id
+       WHERE a.status = 'published' AND (a.title LIKE ? OR a.excerpt LIKE ? OR a.body LIKE ?)
+       ORDER BY a.published_at DESC LIMIT 50`
+    )
+    .bind(like, like, like)
+    .all()
+  return c.json({ articles: rows.results })
+})
+
 // Public: get single article by slug
 app.get('/:slug', async (c) => {
   const { slug } = c.req.param()
@@ -115,24 +135,4 @@ app.patch('/:id', authenticate, requireRole('editor', 'admin'), zValidator('json
 
   return c.json({ success: true })
 })
-
-  app.get('/search', async (c) => {
-    const q = c.req.query('q')
-    if (!q) return c.json({ articles: [] })
-    const db = c.env.DB
-    const like = `%${q}%`
-    const rows = await db
-      .prepare(
-        `SELECT a.*, s.name AS section_name, s.slug AS section_slug, s.color_hex AS section_color_hex, u.name AS author_name
-         FROM articles a
-         JOIN sections s ON s.id = a.section_id
-         JOIN users u ON u.id = a.author_id
-         WHERE a.status = 'published' AND (a.title LIKE ? OR a.excerpt LIKE ? OR a.body LIKE ?)
-         ORDER BY a.published_at DESC LIMIT 50`
-      )
-      .bind(like, like, like)
-      .all()
-    return c.json({ articles: rows.results })
-  })
-
 export default app

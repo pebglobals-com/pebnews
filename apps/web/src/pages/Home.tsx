@@ -114,42 +114,41 @@ export default function Home() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-       {/* Hero Section */}
-       {hero && (
+       {/* Hero Section — two-column split layout */}
+       {hero && hero.featured_image_url && (
          <section className="mb-8">
            <Link
              to={`/article/${new Date(hero.published_at).getFullYear()}/${String(new Date(hero.published_at).getMonth() + 1).padStart(2, '0')}/${String(new Date(hero.published_at).getDate()).padStart(2, '0')}/${hero.slug}`}
-             className="group block overflow-hidden rounded-lg"
+             className="group block overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md"
            >
-                {hero.featured_image_url && (
-                  <div className="relative h-[280px] md:h-[420px] w-full overflow-hidden rounded-lg">
-<img
-                      src={hero.featured_image_url}
-                      alt={hero.title}
-                      className="absolute inset-0 h-full w-full object-cover object-center"
-                   />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/75" />
-                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 lg:p-10">
-                     <span
-                       className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white mb-3"
-                       style={{ backgroundColor: hero.section_color_hex }}
-                     >
-                       {hero.section_name}
-                     </span>
-                     <h2 className="text-2xl font-bold leading-tight text-white drop-shadow md:text-3xl lg:text-4xl">
-                       {hero.title}
-                     </h2>
-                     <p className="mt-2 text-base leading-relaxed text-gray-100 drop-shadow line-clamp-3">
-                       {hero.excerpt}
-                     </p>
-                     <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-200">
-                       {hero.author_name && <span>By: {hero.author_name}</span>}
-                       <span>{timeAgo(hero.published_at)}</span>
-                       <span>{hero.view_count ?? 0} views</span>
-                     </div>
-                   </div>
+             <div className="flex flex-col md:flex-row md:min-h-[500px]">
+               <div className="md:w-[55%] overflow-hidden">
+                 <img
+                   src={hero.featured_image_url}
+                   alt={hero.title}
+                   className="h-[280px] md:h-full w-full object-cover object-center"
+                 />
+               </div>
+               <div className="flex flex-1 flex-col justify-center p-6 md:p-8 lg:p-10">
+                 <span
+                   className="inline-flex items-center self-start rounded px-2 py-0.5 text-xs font-semibold text-white mb-3"
+                   style={{ backgroundColor: hero.section_color_hex }}
+                 >
+                   {hero.section_name}
+                 </span>
+                 <h2 className="text-2xl font-bold leading-tight text-gray-900 md:text-3xl lg:text-4xl">
+                   {hero.title}
+                 </h2>
+                 <p className="mt-2 text-base leading-relaxed text-gray-600 line-clamp-3">
+                   {hero.excerpt}
+                 </p>
+                 <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                   {hero.author_name && <span>By: {hero.author_name}</span>}
+                   <span>{timeAgo(hero.published_at)}</span>
+                   <span>{hero.view_count ?? 0} views</span>
                  </div>
-               )}
+               </div>
+             </div>
            </Link>
          </section>
        )}
