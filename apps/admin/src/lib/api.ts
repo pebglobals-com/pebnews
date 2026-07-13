@@ -29,7 +29,8 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   if (!res.ok) {
     const errBody = await res.json().catch(() => ({ error: 'Request failed' }))
     if (res.status === 401 && !AUTH_ROUTES.includes(path)) {
-      const e = new Error(errBody.error || 'Session expired') as any
+      const msg = errBody.detail || errBody.error || 'Session expired'
+      const e = new Error(msg) as any
       e.status = 401
       throw e
     }
@@ -88,7 +89,8 @@ export const adminApi = {
         body: formData,
       })
       if (res.status === 401) {
-        const e = new Error('Session expired') as any
+        const errBody = await res.json().catch(() => ({ detail: 'unknown' }))
+        const e = new Error(errBody.detail || 'Session expired') as any
         e.status = 401
         throw e
       }

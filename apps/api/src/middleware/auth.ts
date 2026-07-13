@@ -10,11 +10,17 @@ export async function authenticate(c: Context, next: Next) {
 
   const token = header.slice(7)
   try {
-    const payload = await verify(token, (c.env as any).JWT_SECRET) as unknown as JwtPayload
+    const secret = (c.env as any).JWT_SECRET
+    if (!secret) {
+      console.error('JWT_SECRET is not set in environment')
+      return c.json({ error: 'Server configuration error' }, 500)
+    }
+    const payload = await verify(token, secret) as unknown as JwtPayload
     c.set('user', payload)
     return next()
-  } catch {
-    return c.json({ error: 'Invalid or expired token' }, 401)
+  } catch (e: any) {
+    console.error('JWT verify failed:', e?.message || e)
+    return c.json({ error: 'Invalid or expired token', detail: e?.message }, 401)
   }
 }
 
