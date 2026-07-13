@@ -1,10 +1,9 @@
 -- ============================================================
 -- Seed Category Demo Articles
--- Client-owned content from pebnews.com — NOT third-party scraped
+-- Client-owned content migrated from original platform — NOT third-party scraped
 -- ============================================================
 
 -- METRO: Police arrest wanted bandit, Abubakar Usman in Delta, rescue kidnap victim
--- Original: https://pebnews.com/2026/07/09/police-arrest-wanted-bandit-abubakar-usman-in-delta-rescue-kidnap-victim
 -- Author: Mattex Omonext
 INSERT OR IGNORE INTO articles (
   id, title, slug, section_id, author_id, excerpt, body,
@@ -25,7 +24,6 @@ INSERT OR IGNORE INTO articles (
 );
 
 -- SPORTS: Pessu primary school wins Headmasters' cup as Oborevwori rewards victory with bus, cash
--- Original: https://pebnews.com/2026/02/05/pessu-primary-school-wins-headmasters-cup-as-oborevwori-rewards-victory-with-bus-cash
 -- Author: Ebube Ibe-Lucas
 INSERT OR IGNORE INTO articles (
   id, title, slug, section_id, author_id, excerpt, body,
@@ -46,7 +44,6 @@ INSERT OR IGNORE INTO articles (
 );
 
 -- EDITORIAL: When culture comes alive: Oporoza, Amaseikumor Festival and the urgency of preservation
--- Original: https://pebnews.com/2026/04/14/when-culture-comes-alive-oporoza-amaseikumor-festival-and-the-urgency-of-preservation
 -- Author: Ebube Ibe-Lucas
 INSERT OR IGNORE INTO articles (
   id, title, slug, section_id, author_id, excerpt, body,
@@ -60,14 +57,13 @@ INSERT OR IGNORE INTO articles (
   '0ae4bd57-e799-4002-8efe-04127d6fab4f',
   'In an era where modern life continues to distance people from their roots, experiences like a recent visit to Oporoza in Gbaramatu Kingdom, particularly during the Amaseikumor Festival, serves as a powerful reminder of the enduring value of culture and community.',
   '<p>In an era where modern life continues to distance people from their roots, experiences like a recent visit to Oporoza in Gbaramatu Kingdom, particularly during the Amaseikumor Festival, serves as a powerful reminder of the enduring value of culture and community.</p><p>For many, traditional settings are becoming increasingly unfamiliar, reduced to stories, occasional visits, or cultural showcases. Yet what is often overlooked is the depth of connection, discipline, and identity embedded within these environments when they come alive through festivals and communal gatherings that actively sustain heritage.</p><p>The journey to Oporoza itself reflects this contrast between modern convenience and cultural immersion. Travelling by an open boat, unfamiliar to many accustomed to urban comfort, highlighted both physical and psychological distance from traditional life. That initial uncertainty, followed by gradual calm, mirrored a broader reality: reconnecting with culture may feel uncomfortable at first, but it is ultimately grounding.</p><p>At the heart of the experience is the people. In communities like Oporoza, hospitality is not a performance but a way of life. Doors remain open, and strangers are received with warmth. This stands in contrast to the increasing social detachment seen in many urban environments, where interactions are often transactional and guarded.</p><p>The presence of political leaders, visitors from different parts of the world, and entertainers such as Zlatan and Poco Lee further reflects the growing visibility of such cultural festivals. However, beyond visibility lies a deeper question of preservation and sustained engagement rather than seasonal attention driven by spectacle.</p><p>Ultimately, places like Oporoza during the Amaseikumor Festival are more than cultural events; they are living archives of identity, memory, and tradition. They remind us of who we are, where we come from, and what stands to be lost if such traditions are not intentionally sustained. In a rapidly changing world, the question is no longer whether culture matters, but whether we are willing to remain connected to it.</p>',
-  'https://pebnews.com/storage/PEBNEWSFB_IMG_1776195349084.jpg',
+  'https://pub-d791492f7b1d413491ca62d7ac29e1d3.r2.dev/amaseikumor-festival.jpg',
   'published',
   '2026-04-14T19:30:00.000Z',
   0, NULL, NULL
 );
 
 -- BUSINESS: Seplat Energy Urges Stakeholder Collaboration to Unlock Nigeria's Gas Potential
--- Original: https://pebnews.com/2025/05/08/seplat-energy-urges-stakeholder-collaboration-to-unlock-nigerias-gas-potential
 -- Author: Joy Joseph (JJ)
 INSERT OR IGNORE INTO articles (
   id, title, slug, section_id, author_id, excerpt, body,

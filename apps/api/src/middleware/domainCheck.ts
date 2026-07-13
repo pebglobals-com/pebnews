@@ -5,10 +5,8 @@ export interface Env {
 }
 
 export function domainCheck(c: Context, next: Next) {
-  // IMPORTANT: ALLOWED_EDITOR_DOMAIN is set via Cloudflare Worker secret.
-  // Before production launch, change this to the client's real domain
-  // (e.g., pebnews.com) using `wrangler secret put ALLOWED_EDITOR_DOMAIN`.
-  // The current value (talent-loop.org) is for testing only.
+  // IMPORTANT: ALLOWED_EDITOR_DOMAIN is set via `wrangler secret put ALLOWED_EDITOR_DOMAIN`.
+  // Set it to the email domain allowed for editor registration (e.g., talent-loop.org).
 
   const { email } = c.req.valid('json') as { email?: string }
   if (!email) {

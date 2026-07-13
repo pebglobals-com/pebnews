@@ -59,7 +59,7 @@ export default function EditorSignup() {
               type="email"
               required
               className="input-field mt-1"
-              placeholder="you@pebnews.com"
+              placeholder="you@talent-loop.org"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

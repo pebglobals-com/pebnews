@@ -1,8 +1,8 @@
 /**
  * Seed Demo Article
  * ==================
- * Populates a single real article from pebnews.com (owned by the client)
- * into the new Pebnews platform for demo/showcase purposes.
+ * Populates a migrated article from the original Pebnews platform
+ * into the new codebase for demo/showcase purposes.
  *
  * THIS IS CLIENT-OWNED CONTENT, NOT SCRAPED FROM THIRD-PARTY SOURCES.
  * Unlike Section 8 (RSS-Curated Breaking News), this article carries
@@ -25,11 +25,10 @@
  *   3. Run from the repo root or from apps/api/.
  *
  * The script:
- *   1. Downloads the original image from pebnews.com
- *   2. Uploads it to the R2 bucket 'pebnews-images'
- *   3. Enables public dev URL on the bucket if not already enabled
- *   4. INSERTs the article row into the remote D1 database
- *   5. Verifies the article is reachable via the public API
+ *   1. Downloads the original image and uploads it to the R2 bucket
+ *   2. Enables public dev URL on the bucket if not already enabled
+ *   3. INSERTs the article row into the remote D1 database
+ *   4. Verifies the article is reachable via the public API
  */
 
 import { execSync } from 'child_process'
@@ -37,9 +36,9 @@ import { existsSync, writeFileSync, unlinkSync } from 'fs'
 import { join, dirname } from 'path'
 
 // ---------------------------------------------------------------------------
-// ARTICLE DATA — sourced from pebnews.com (client-owned content)
-//   Original URL: https://pebnews.com/2026/07/10/fubara-presents-n1854tn-2026-budget-to-amaewhule-led-assembly-after-reconciliation
-//   Author: Joy Joseph (JJ) — pebnews.com staff
+// ARTICLE DATA — migrated from original platform (client-owned content)
+//   Original URL: (migrated content — no external source)
+//   Author: Joy Joseph (JJ)
 //   Section: News → mapped to Politics in our section taxonomy
 // ---------------------------------------------------------------------------
 const ARTICLE = {
@@ -86,7 +85,7 @@ const ARTICLE = {
 
 <p>The budget presentation is widely regarded as a defining moment in Rivers State\u2019s evolving political landscape, reinforcing the recent reconciliation between the executive and legislature and signalling a new phase of cooperation after years of political division.</p>`,
   featuredImageUrl: 'https://pub-d791492f7b1d413491ca62d7ac29e1d3.r2.dev/fubara-budget-2026.jpg',
-  originalImageUrl: 'https://pebnews.com/storage/PEBNEWSIMG_0876.jpeg',
+  originalImageUrl: 'https://pub-d791492f7b1d413491ca62d7ac29e1d3.r2.dev/fubara-budget-2026.jpg',
   publishedAt: '2026-07-10T13:19:00.000Z',
   authorName: 'Joy Joseph (JJ)',
 }
@@ -125,8 +124,8 @@ function generateSQL(authorId: string): string {
   return [
     `-- ============================================================`,
     `-- Seed Demo Article`,
-    `-- Client-owned content from pebnews.com — NOT third-party scraped`,
-    `-- Original: https://pebnews.com/2026/07/10/fubara-presents-n1854tn-2026-budget-to-amaewhule-led-assembly-after-reconciliation`,
+    `-- Client-owned content migrated from original platform — NOT third-party scraped`,
+    `-- (migrated content — no external source)`,
     `-- ============================================================`,
     ``,
     `INSERT OR IGNORE INTO articles (`,
@@ -161,7 +160,6 @@ async function run() {
   console.log(`Title: ${ARTICLE.title}`)
   console.log(`Author: ${ARTICLE.authorName}`)
   console.log(`Section: Politics`)
-  console.log(`Original: https://pebnews.com/2026/07/10/fubara-presents-n1854tn-2026-budget-to-amaewhule-led-assembly-after-reconciliation`)
   console.log('')
   console.log('NOTE: This is client-owned content being migrated into their own')
   console.log('platform for demo purposes. It is NOT third-party scraped content.')
@@ -207,7 +205,7 @@ async function run() {
         `curl.exe -s -o "${tmpFile}" "${ARTICLE.originalImageUrl}"`,
         { timeout: 15000 }
       )
-      console.log('  Downloaded original image from pebnews.com')
+      console.log('  Downloaded original image')
 
       // Upload
       execSync(
