@@ -69,21 +69,30 @@ export default function Home() {
   useEffect(() => {
     Promise.all([
       api.articles.list(1),
+      api.articles.list(20),
       api.sections.list(),
-    ]).then(([articles, sectionData]) => {
-      if (articles.articles.length > 0) {
-        setHero(articles.articles[0])
+    ]).then(([heroArticle, recentNews, sectionData]) => {
+      if (heroArticle.articles.length > 0) {
+        setHero(heroArticle.articles[0])
+      }
+      const recentSection: SectionGroup = {
+        slug: 'recent-news',
+        name: 'Recent News',
+        color_hex: '#dc2626',
+        articles: recentNews.articles.slice(0, 12),
       }
       Promise.all(
         sectionData.sections.map((s: any) =>
-          api.articles.bySection(s.slug, 4).then((res) => ({
+          api.articles.bySection(s.slug, 12).then((res) => ({
             slug: s.slug,
             name: s.name,
             color_hex: s.color_hex,
             articles: res.articles,
           }))
         )
-      ).then(setSections)
+      ).then((allSections) => {
+        setSections([recentSection, ...allSections.filter((s) => s.slug !== 'recent-news')])
+      })
       setLoading(false)
     }).catch(() => setLoading(false))
   }, [])
@@ -92,10 +101,10 @@ export default function Home() {
     return (
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="animate-pulse space-y-8">
-          <div className="h-48 md:h-64 rounded-xl bg-gray-200" />
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-64 rounded-xl bg-gray-200" />
+          <div className="h-64 rounded-xl bg-gray-200" />
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+              <div key={i} className="aspect-[16/9] rounded-xl bg-gray-200" />
             ))}
           </div>
         </div>
@@ -107,50 +116,65 @@ export default function Home() {
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
        {/* Hero Section */}
        {hero && (
-         <section className="mb-8 aspect-[16/9] max-h-80 md:max-h-[400px]">
-          <Link
-            to={`/article/${new Date(hero.published_at).getFullYear()}/${String(new Date(hero.published_at).getMonth() + 1).padStart(2, '0')}/${String(new Date(hero.published_at).getDate()).padStart(2, '0')}/${hero.slug}`}
-            className="group block overflow-hidden rounded-lg border border-gray-200 bg-white md:flex"
-          >
-              {hero.featured_image_url && (
-                <div className="relative md:w-3/5 aspect-[16/9] overflow-hidden rounded-lg">
-                  <img
-                    src={hero.featured_image_url}
-                    alt={hero.title}
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                </div>
-              )}
-            <div className="flex flex-col justify-center p-6 md:w-2/5">
-              <span
-                className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white"
-                style={{ backgroundColor: hero.section_color_hex }}
-              >
-                {hero.section_name}
-              </span>
-              <h2 className="mt-3 text-xl font-bold leading-tight text-gray-900 group-hover:text-blue-600 transition-colors md:text-2xl">
-                {hero.title}
-              </h2>
-              <p className="mt-2 text-sm leading-relaxed text-gray-500 line-clamp-3">
-                {hero.excerpt}
-              </p>
-              <div className="mt-4 flex items-center gap-3 text-xs text-gray-400">
-                {hero.author_name && <span>By: {hero.author_name}</span>}
-                <span>{timeAgo(hero.published_at)}</span>
-                <span>{hero.view_count ?? 0} views</span>
-              </div>
-            </div>
-          </Link>
-        </section>
-      )}
+         <section className="mb-8">
+           <Link
+             to={`/article/${new Date(hero.published_at).getFullYear()}/${String(new Date(hero.published_at).getMonth() + 1).padStart(2, '0')}/${String(new Date(hero.published_at).getDate()).padStart(2, '0')}/${hero.slug}`}
+             className="group block overflow-hidden rounded-lg"
+           >
+               {hero.featured_image_url && (
+                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+                   <img
+                     src={hero.featured_image_url}
+                     alt={hero.title}
+                     className="absolute inset-0 h-full w-full object-cover"
+                   />
+                   <div className="absolute inset-0 bg-black/40" />
+                   <div className="relative p-6 md:p-8 lg:p-10">
+                     <span
+                       className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white mb-3"
+                       style={{ backgroundColor: hero.section_color_hex }}
+                     >
+                       {hero.section_name}
+                     </span>
+                     <h2 className="text-2xl font-bold leading-tight text-white drop-shadow md:text-3xl lg:text-4xl">
+                       {hero.title}
+                     </h2>
+                     <p className="mt-2 text-base leading-relaxed text-gray-100 drop-shadow line-clamp-3">
+                       {hero.excerpt}
+                     </p>
+                     <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-200">
+                       {hero.author_name && <span>By: {hero.author_name}</span>}
+                       <span>{timeAgo(hero.published_at)}</span>
+                       <span>{hero.view_count ?? 0} views</span>
+                     </div>
+                   </div>
+                 </div>
+               )}
+           </Link>
+         </section>
+       )}
 
-      {/* Breaking News Grid */}
-      <BreakingNewsGrid />
+       {/* Secondary Featured Articles Row */}
+       {sections.length > 0 && sections[0].articles.length > 4 && (
+         <section className="mb-8">
+           <h2 className="mb-4 text-lg font-bold text-gray-900 border-b-2 border-gray-900 pb-1">
+             Latest Updates
+           </h2>
+           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+             {sections[0].articles.slice(1, 5).map((article: any) => (
+               <ArticleCard key={article.id} article={article} />
+             ))}
+           </div>
+         </section>
+       )}
 
-      {/* Two-column layout */}
-      <div className="flex flex-col gap-8 lg:flex-row">
-        {/* Main Content */}
-        <div className="flex-1 min-w-0">
+       {/* Breaking News Grid */}
+       <BreakingNewsGrid />
+
+       {/* Two-column layout */}
+       <div className="flex flex-col gap-8 lg:flex-row">
+         {/* Main Content */}
+         <div className="flex-1 min-w-0">
           {/* Recent News — first section articles as cards */}
           {sections.length > 0 && sections[0].articles.length > 0 && (
             <section className="mb-8">
