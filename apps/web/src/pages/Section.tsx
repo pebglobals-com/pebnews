@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { api } from '../lib/api'
+import AdCard from '../components/AdCard'
 
 function timeAgo(dateStr: string): string {
   const now = Date.now()
@@ -12,14 +13,6 @@ function timeAgo(dateStr: string): string {
   const days = Math.floor(hours / 24)
   if (days < 7) return `${days} day${days === 1 ? '' : 's'} ago`
   return new Date(dateStr).toLocaleDateString()
-}
-
-function AdBlock() {
-  return (
-    <div className="flex h-40 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-sm text-gray-400">
-      PLACE YOUR ADS HERE
-    </div>
-  )
 }
 
 export default function Section() {
@@ -66,58 +59,58 @@ export default function Section() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="flex-1 min-w-0">
-          <div className="mb-6 border-b-2 border-gray-900 pb-1">
-            <h1 className="text-2xl font-bold text-gray-900">{section.name}</h1>
-          </div>
+           <div className="flex flex-col gap-8 lg:flex-row">
+             <div className="flex-1 min-w-0">
+               <div className="mb-6 border-b-2 border-gray-900 pb-1">
+                 <h1 className="text-2xl font-bold text-gray-900">{section.name}</h1>
+               </div>
 
-          {articles.length > 0 ? (
-            <div className="space-y-0">
-              {articles.map((article: any, i: number) => {
-                const d = new Date(article.published_at)
-                const path = `/article/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${article.slug}`
-                return (
-                  <Link key={article.id} to={path} className={`group flex gap-4 py-4 ${i > 0 ? 'border-t border-gray-100' : ''}`}>
-                    {article.featured_image_url && (
-                      <div className="w-24 shrink-0 overflow-hidden rounded md:w-32">
-                        <img src={article.featured_image_url} alt="" className="h-20 w-full object-cover md:h-24" loading="lazy" />
-                      </div>
-                    )}
-                    <div className="min-w-0 flex-1">
-                      <span
-                        className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white"
-                        style={{ backgroundColor: section.color_hex }}
-                      >
-                        {section.name}
-                      </span>
-                      <span className="ml-2 text-xs text-gray-400">{timeAgo(article.published_at)}</span>
-                      <h3 className="mt-1 text-sm font-semibold leading-snug text-gray-900 group-hover:text-blue-600 transition-colors">
-                        {article.title}
-                      </h3>
-                      {article.excerpt && (
-                        <p className="mt-0.5 text-xs text-gray-500 line-clamp-2">{article.excerpt}</p>
-                      )}
-                      <div className="mt-1 flex items-center gap-3 text-xs text-gray-400">
-                        {article.author_name && <span>By: {article.author_name}</span>}
-                        <span>{article.view_count ?? 0} views</span>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          ) : (
-            <p className="py-8 text-sm text-gray-400">No articles in this section yet.</p>
-          )}
-        </div>
+               {articles.length > 0 ? (
+                 <div className="space-y-0">
+                   {articles.map((article: any, i: number) => {
+                     const d = new Date(article.published_at)
+                     const path = `/article/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${article.slug}`
+                     return (
+                       <Link key={article.id} to={path} className={`group flex gap-4 py-4 ${i > 0 ? 'border-t border-gray-100' : ''}`}>
+                         {article.featured_image_url && (
+                           <div className="w-24 shrink-0 overflow-hidden rounded md:w-32">
+                             <img src={article.featured_image_url} alt="" className="h-20 w-full object-cover md:h-24" loading="lazy" />
+                           </div>
+                         )}
+                         <div className="min-w-0 flex-1">
+                           <span
+                             className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white"
+                             style={{ backgroundColor: section.color_hex }}
+                           >
+                             {section.name}
+                           </span>
+                           <span className="ml-2 text-xs text-gray-400">{timeAgo(article.published_at)}</span>
+                           <h3 className="mt-1 text-sm font-semibold leading-snug text-gray-900 group-hover:text-blue-600 transition-colors">
+                             {article.title}
+                           </h3>
+                           {article.excerpt && (
+                             <p className="mt-0.5 text-xs text-gray-500 line-clamp-2">{article.excerpt}</p>
+                           )}
+                           <div className="mt-1 flex items-center gap-3 text-xs text-gray-400">
+                             {article.author_name && <span>By: {article.author_name}</span>}
+                             <span>{article.view_count ?? 0} views</span>
+                           </div>
+                         </div>
+                       </Link>
+                     )
+                   })}
+                 </div>
+               ) : (
+                 <p className="py-8 text-sm text-gray-400">No articles in this section yet.</p>
+               )}
+             </div>
 
-        <aside className="w-full shrink-0 lg:w-80">
-          <div className="space-y-6 lg:sticky lg:top-36">
-            <AdBlock />
-            <AdBlock />
-          </div>
-        </aside>
+             <aside className="w-full shrink-0 lg:w-80">
+               <div className="space-y-6 lg:sticky lg:top-36">
+                 <AdCard />
+                 <AdCard />
+               </div>
+             </aside>
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../lib/api'
 import BreakingNewsGrid from '../components/BreakingNewsGrid'
+import AdCard from '../components/AdCard'
 
 interface SectionGroup {
   slug: string
@@ -10,25 +11,17 @@ interface SectionGroup {
   articles: any[]
 }
 
-function timeAgo(dateStr: string): string {
-  const now = Date.now()
-  const date = new Date(dateStr).getTime()
-  const diff = now - date
-  const hours = Math.floor(diff / 3600000)
-  if (hours < 1) return 'just now'
-  if (hours < 24) return `${hours}h ago`
-  const days = Math.floor(hours / 24)
-  if (days < 7) return `${days}d ago`
-  return new Date(dateStr).toLocaleDateString()
-}
-
-function AdBlock() {
-  return (
-    <div className="flex h-40 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 text-sm text-gray-400">
-      PLACE YOUR ADS HERE
-    </div>
-  )
-}
+  function timeAgo(dateStr: string): string {
+    const now = Date.now()
+    const date = new Date(dateStr).getTime()
+    const diff = now - date
+    const hours = Math.floor(diff / 3600000)
+    if (hours < 1) return 'just now'
+    if (hours < 24) return `${hours}h ago`
+    const days = Math.floor(hours / 24)
+    if (days < 7) return `${days}d ago`
+    return new Date(dateStr).toLocaleDateString()
+  }
 
 function ArticleCard({ article, section }: { article: any; section?: SectionGroup }) {
   const sec = section || { name: article.section_name, slug: article.section_slug, color_hex: article.section_color_hex }
@@ -197,8 +190,8 @@ export default function Home() {
         {/* Sidebar */}
         <aside className="w-full shrink-0 lg:w-80">
           <div className="space-y-6 lg:sticky lg:top-36">
-            <AdBlock />
-            <AdBlock />
+            <AdCard />
+            <AdCard />
           </div>
         </aside>
       </div>
