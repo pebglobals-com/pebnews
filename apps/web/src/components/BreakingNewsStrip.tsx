@@ -31,16 +31,13 @@ export default function BreakingNewsStrip() {
         <div className="relative overflow-hidden py-1.5 ml-3 w-full">
           <div className="flex animate-ticker gap-8 whitespace-nowrap hover:[animation-play-state:paused]" style={{ width: 'max-content' }}>
             {[...items, ...items].map((item, i) => (
-              <a
+              <span
                 key={`${item.id}-${i}`}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-white/90 hover:text-white transition-colors shrink-0"
+                className="inline-flex items-center gap-1.5 text-sm text-white/90 shrink-0"
               >
                 <span className="font-semibold">{item.source_name}:</span>
                 <span>{item.headline}</span>
-              </a>
+              </span>
             ))}
           </div>
         </div>
