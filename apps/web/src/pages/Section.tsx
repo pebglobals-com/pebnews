@@ -72,11 +72,11 @@ export default function Section() {
                      const path = `/article/${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}/${article.slug}`
                      return (
                        <Link key={article.id} to={path} className={`group flex gap-4 py-4 ${i > 0 ? 'border-t border-gray-100' : ''}`}>
-                         {article.featured_image_url && (
-                           <div className="w-24 shrink-0 overflow-hidden rounded md:w-32">
-                             <img src={article.featured_image_url} alt="" className="h-20 w-full object-cover md:h-24" loading="lazy" />
-                           </div>
-                         )}
+                          {article.featured_image_url && (
+                            <div className="w-24 shrink-0 aspect-[16/9] overflow-hidden rounded md:w-32">
+                              <img src={article.featured_image_url} alt="" className="h-full w-full object-cover" loading="lazy" />
+                            </div>
+                          )}
                          <div className="min-w-0 flex-1">
                            <span
                              className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white"

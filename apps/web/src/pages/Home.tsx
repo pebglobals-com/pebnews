@@ -105,22 +105,22 @@ export default function Home() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      {/* Hero Section */}
-      {hero && (
-        <section className="mb-8">
+       {/* Hero Section */}
+       {hero && (
+         <section className="mb-8 aspect-[16/9] max-h-80 md:max-h-[400px]">
           <Link
             to={`/article/${new Date(hero.published_at).getFullYear()}/${String(new Date(hero.published_at).getMonth() + 1).padStart(2, '0')}/${String(new Date(hero.published_at).getDate()).padStart(2, '0')}/${hero.slug}`}
             className="group block overflow-hidden rounded-lg border border-gray-200 bg-white md:flex"
           >
-             {hero.featured_image_url && (
-               <div className="md:w-3/5">
-                 <img
-                   src={hero.featured_image_url}
-                   alt={hero.title}
-                   className="h-48 w-full object-cover md:h-full"
-                 />
-               </div>
-             )}
+              {hero.featured_image_url && (
+                <div className="relative md:w-3/5 aspect-[16/9] overflow-hidden rounded-lg">
+                  <img
+                    src={hero.featured_image_url}
+                    alt={hero.title}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+              )}
             <div className="flex flex-col justify-center p-6 md:w-2/5">
               <span
                 className="inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold text-white"

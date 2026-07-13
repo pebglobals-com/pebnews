@@ -39,11 +39,11 @@ export default function ArticleCard({
   return (
     <Link to={articlePath} className="group block border-b border-gray-100 pb-4 mb-4 last:border-0">
       {featuredImageUrl && (
-        <div className="mb-2.5 overflow-hidden rounded">
+        <div className="mb-2.5 aspect-[16/9] overflow-hidden rounded">
           <img
             src={featuredImageUrl}
             alt={title}
-            className="h-44 w-full object-cover transition-transform duration-150 group-hover:scale-[1.02]"
+            className="h-full w-full object-cover transition-transform duration-150 group-hover:scale-[1.02]"
             loading="lazy"
           />
         </div>
