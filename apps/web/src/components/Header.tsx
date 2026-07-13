@@ -77,6 +77,12 @@ export default function Header() {
                 <Search className="h-5 w-5" />
               </button>
             )}
+            <Link
+              to="/advertise"
+              className="inline-flex items-center rounded-md bg-amber-400 px-2.5 py-1.5 text-xs font-semibold text-amber-900 hover:bg-amber-500 transition-colors"
+            >
+              Place Your Ad
+            </Link>
             <button className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -121,6 +127,15 @@ export default function Header() {
           <Link to="/services" className="px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
             Services
           </Link>
+          <Link to="/contact" className="px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50">
+            Contact
+          </Link>
+          <Link
+            to="/advertise"
+            className="ml-auto rounded-md bg-amber-400 px-3 py-2 text-sm font-semibold text-amber-900 hover:bg-amber-500 transition-colors"
+          >
+            Place Your Ad
+          </Link>
         </div>
       </nav>
 
@@ -141,6 +156,7 @@ export default function Header() {
             ))}
             <Link to="/about" className="block rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-50" onClick={() => setMobileOpen(false)}>About</Link>
             <Link to="/services" className="block rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-50" onClick={() => setMobileOpen(false)}>Services</Link>
+            <Link to="/contact" className="block rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-50" onClick={() => setMobileOpen(false)}>Contact</Link>
           </div>
         </nav>
       )}
