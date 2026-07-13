@@ -140,6 +140,7 @@ export default function Header() {
               </Link>
             ))}
             <Link to="/about" className="block rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-50" onClick={() => setMobileOpen(false)}>About</Link>
+            <Link to="/services" className="block rounded px-3 py-2 text-sm text-gray-600 hover:bg-gray-50" onClick={() => setMobileOpen(false)}>Services</Link>
           </div>
         </nav>
       )}
