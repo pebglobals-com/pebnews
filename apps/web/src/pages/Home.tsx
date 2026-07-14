@@ -167,8 +167,11 @@ export default function Home() {
          </section>
        )}
 
-       {/* Breaking News Grid */}
-       <BreakingNewsGrid />
+        {/* Placement A — inline ad after Latest Updates */}
+        <AdCard variant="inline" />
+
+        {/* Breaking News Grid */}
+        <BreakingNewsGrid />
 
        {/* Two-column layout */}
        <div className="flex flex-col gap-8 lg:flex-row">
@@ -188,8 +191,8 @@ export default function Home() {
             </section>
           )}
 
-          {/* Section Blocks */}
-          {sections.slice(0, 3).map((section) => (
+          {/* Section Blocks — skip recentSection, show real sections only */}
+          {sections.filter((s) => s.slug !== 'recent-news').slice(0, 3).map((section) => (
             <section key={section.slug} className="mb-8">
               <div className="mb-3 flex items-center justify-between border-b-2 border-gray-900 pb-1">
                 <h2 className="text-lg font-bold text-gray-900">{section.name}</h2>
@@ -210,10 +213,9 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Sidebar */}
+        {/* Sidebar — Placement B */}
         <aside className="w-full shrink-0 lg:w-80">
           <div className="space-y-6 lg:sticky lg:top-36">
-            <AdCard />
             <AdCard />
           </div>
         </aside>
